@@ -1,0 +1,34 @@
+<div class="grid-4-center">
+    <div class="col">
+        <h2>Login</h2>
+        <form #loginForm='ngForm' (ngSubmit)="onSubmit(loginForm)">
+
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                <input name="email" #email="ngModel" minlength="5" [(ngModel)]="model.email" type="email" id="email" class="mdl-textfield__input form-control">
+                <div [hidden]="email.valid || (email.pristine)" class="alert alert-danger">
+                    Email is required (minimum length is 5)
+                </div>
+                <label required class="mdl-textfield__label" for="email">Email</label>
+            </div>
+
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                <input name="password" #password="ngModel" minlength="8" [(ngModel)]="model.password" class="mdl-textfield__input" type="password"
+                    id="password">
+                <div [hidden]="email.valid || (email.pristine)" class="alert alert-danger">
+                    Password is required (minimum length is 8)
+                </div>
+                <label required class="mdl-textfield__label" for="password">Password</label>
+            </div>
+
+            <div class="mdl-card__actions mdl-card--border">
+                <button class="mdl-button mdl-js-button mdl-button--raised" type="submit" [disabled]="!loginForm.form.valid" (click)="signInWithEmailAndPassword(); loginForm.reset()">Submit</button>
+                <a routerLink="/signup">Don't have an account?</a>
+            </div>
+
+            <div class="mdl-card__actions mdl-card--border">
+                <button class="mdl-button mdl-js-button mdl-button--raised" type="submit" (click)="signInGoogle(); loginForm.reset()">Login via other</button>
+            </div>
+
+        </form>
+    </div>
+</div>
