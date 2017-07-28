@@ -12,6 +12,7 @@ import { CoreModule } from "./core/core-module.module";
 import { SharedModule } from "./shared/shared-module.module";
 import { ComponentsModule } from "./components/components-module.module";
 import { AuthModule } from "./shared/auth/auth.module";
+import { Ng4DropdownModule } from "ng4-material-dropdown";
 
 import { AppComponent } from "./app.component";
 import { NavigationComponent } from "./navigation/navigation.component";
