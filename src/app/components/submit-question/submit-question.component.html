@@ -1,9 +1,47 @@
-<form action="#">
-  <div class="input-field col s12">
-    <select>
-      <option value="{{ cat.id }}" *ngFor="let cat of categories" >Choose a category</option>
-      <!-- <option >{{ cat.title }}</option> -->
-    </select>
-    <label>Category</label>
+<form materialize action="#">
+  <div class="row">
+
+    <div *ngIf="!!categories.length" class="input-field col s12">
+      <select id="category-select" [(ngModel)]="question.categoryId" name="categoryId">
+        <option value="" disabled selected>Choose a category...</option>
+        <option [value]="cat.id" *ngFor="let cat of categories">{{ cat.title }}</option>
+      </select>
+      <label>Category</label>
+    </div>
+
+    <div *ngIf="!!subcats.length" class="input-field col s12">
+      <select id="subcategory-select" [(ngModel)]="question.subCategoryId" name="subCategoryId">
+        <option value="" disabled selected>Choose a sub category..</option>
+        <option [ngValue]="subcat.id" *ngFor="let subcat of subCategories">{{ subcat.title }}</option>
+      </select>
+      <label>Sub Category</label>
+    </div>
+
+    <div class="input-field col s6">
+      <input [(ngModel)]="question.questionText" name="questionText" placeholder="Type question here..." id="question" type="text"
+        class="validate">
+      <label for="question">Question</label>
+    </div>
+
+    <div *ngIf="!!tags.length" class="input-field col s12">
+      <select id="tag-select" [(ngModel)]="question.tag" name="tag">
+        <option value="" disabled selected>Choose a tag...</option>
+        <option [ngValue]="tag.id" *ngFor="let tag of tags">{{ tag.title }}</option>
+      </select>
+      <label>Tag</label>
+    </div>
+
+    <button (click)="submitQuestion()" class="btn waves-effect waves-light" type="submit" name="action">Submit
+      <i class="material-icons right">send</i>
+    </button>
+    <!-- <div input-field>
+      <select class="" ng-model="select.value1" material-select>
+        <option value="" disabled selected>Choose a category</option>
+        <option *ngFor="let cat of categories">{{cat.title}}</option>
+      </select>
+      <label>Category</label>
+    </div>
+  </div> -->
+
   </div>
 </form>

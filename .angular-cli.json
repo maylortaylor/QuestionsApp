@@ -15,8 +15,12 @@
 			"tsconfig": "tsconfig.app.json",
 			"testTsconfig": "tsconfig.spec.json",
 			"prefix": "app",
-			"styles": ["styles.less"],
-			"scripts": [],
+			"styles": ["../node_modules/materialize-css/dist/css/materialize.min.css", "app.less"],
+			"scripts": [
+				"../node_modules/jquery/dist/jquery.min.js",
+				"../node_modules/hammerjs/hammer.js",
+				"../node_modules/materialize-css/dist/js/materialize.min.js"
+			],
 			"environmentSource": "environments/environment.ts",
 			"environments": {
 				"dev": "environments/environment.ts",

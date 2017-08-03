@@ -1,12 +1,16 @@
 export class Question {
 	id: string;
-	categoryId: string;
+	categoryId: any;
 	subCategoryId: string;
-	question: string;
+	questionText: string;
 	description: string;
 	dateCreated: string;
+	tags: Array<string>;
 	/**
      *
      */
-	constructor() {}
+	constructor(guid) {
+		this.id = guid;
+		this.tags = new Array<string>();
+	}
 }
