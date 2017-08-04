@@ -4,7 +4,11 @@
             <div class="card">
                 <div class="card-content">
                     <span class="card-title">{{ question.questionText }}</span>
-                    <!-- <p></p> -->
+                    <p>{{question.category.title}} / {{question.subCategory.title}}</p>
+
+                    <div class="chip" *ngFor="let tag of question.tags">
+                        {{tag.title}}
+                    </div>
                 </div>
                 <div class="card-action">
                     <a href="#">Upvote</a>
