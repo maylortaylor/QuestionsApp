@@ -21,7 +21,6 @@ declare var $: any;
 	styleUrls: ["./submit-question.component.less"]
 })
 export class SubmitQuestionComponent implements OnInit {
-	debugMode: true;
 	categories: Array<SelectListItem> = new Array<SelectListItem>();
 	subCategories: Array<SubCategory> = new Array<SubCategory>();
 	tags: Array<Tag> = new Array<Tag>();
