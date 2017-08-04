@@ -11,7 +11,33 @@ import * as moment from "moment";
 
 @Injectable()
 export class AngularFireDbSeeder {
-	private categoriesForSeed: any = ["Would You Rather", "Fuck, Marry, or Kill", "Pick Top 3", "Devil's Advocate", "Opend Ended..."];
+	private categoriesForSeed: any = [
+		{
+			title: "Would You Rather",
+			hasOptions: false,
+			isMultipleChoice: true
+		},
+		{
+			title: "Fuck, Mary, Kill",
+			hasOptions: true,
+			isMultipleChoice: true
+		},
+		{
+			title: "Pick Top 3",
+			hasOptions: true,
+			isMultipleChoice: true
+		},
+		{
+			title: "Devil's Advocate",
+			hasOptions: false,
+			isMultipleChoice: false
+		},
+		{
+			title: "Open Ended...",
+			hasOptions: false,
+			isMultipleChoice: false
+		}
+	];
 	private subCategoriesForSeed: any = ["Real", "Fiction", "Male", "Female"];
 	private tagsForSeed: any = [
 		"SFW",
@@ -52,9 +78,11 @@ export class AngularFireDbSeeder {
 	// }
 	uploadCategories() {
 		for (var i = 0; i < this.categoriesForSeed.length; i++) {
-			var categoryTitle = this.categoriesForSeed[i];
+			var cat = this.categoriesForSeed[i];
 			var newCategory = new Category(this.guid.newGuid(), true);
-			newCategory.title = categoryTitle;
+			newCategory.title = cat.title;
+			newCategory.isMultipleChoice = cat.isMultipleChoice;
+			newCategory.hasOptions = cat.hasOptions;
 
 			this.afdb
 				.upload("Categories", newCategory, "category")

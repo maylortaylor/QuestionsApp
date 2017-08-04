@@ -5,14 +5,14 @@
                 <!-- <div>{{question | json}}</div> -->
 
                 <div *ngIf="!!categories.length" class="input-field col s12">
-                    <select id="category-select" materialize="material_select" [(ngModel)]="question.category" name="categoryId">
+                    <select id="category-select" materialize="material_select" [(ngModel)]="question.category" (ngModelChange)="onCategoryChange()" name="categoryId">
                       <option value="" disabled selected>Choose a category...</option>
                       <option [ngValue]="cat" *ngFor="let cat of categories">{{ cat.title }}</option>
                     </select>
                     <label>Category</label>
                 </div>
 
-                <div *ngIf="!!subCategories.length" class="input-field col s12">
+                <div *ngIf="!!subCategories.length && !!showSubCategory && hasCategory()" class="input-field col s12">
                     <select id="subcategory-select" materialize="material_select" [(ngModel)]="question.subCategory" name="subCategoryId">
                       <option value="" disabled selected>Choose a sub category..</option>
                       <option [ngValue]="subcat" *ngFor="let subcat of subCategories">{{ subcat.title }}</option>
@@ -20,10 +20,17 @@
                     <label>Sub Category</label>
                 </div>
 
-                <div class="input-field col s12">
-                    <input [(ngModel)]="question.questionText" name="questionText" placeholder="Type question here..." id="question" type="text" class="validate">
-                    <label for="question">Question</label>
+                <div [ngSwitch]="determineNumberOfInputFields()">
+                    <div *ngSwitchCase="1" class="input-field col s12">
+                        <input [(ngModel)]="question.questionText" name="questionText" placeholder="Type question here..." id="question" type="text" class="validate">
+                        <label for="question">Question</label>
+                    </div>
+                    <div *ngSwitchCase="3" class="input-field col s12">
+                        <input [(ngModel)]="question.questionText" name="questionText" placeholder="Type question here..." id="question" type="text" class="validate">
+                        <label for="question">Question</label>
+                    </div>
                 </div>
+
 
                 <div *ngIf="!!tags.length" class="input-field col s12">
                     <select id="tag-select" multiple materialize="material_select" [(ngModel)]="question.tags" name="tag">

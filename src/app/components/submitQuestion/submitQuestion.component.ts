@@ -22,11 +22,12 @@ declare var $: any;
 	styleUrls: ["./submitQuestion.component.less"]
 })
 export class SubmitQuestionComponent implements OnInit {
-	categories: Array<SelectListItem> = new Array<SelectListItem>();
+	categories: Array<Category> = new Array<Category>();
 	subCategories: Array<SubCategory> = new Array<SubCategory>();
 	tags: Array<Tag> = new Array<Tag>();
 
 	question: Question = new Question(this.guid.newGuid());
+	showSubCategory: boolean = false;
 
 	constructor(private guid: GuidService, private afdb: AngularFireDBService, private logger: LoggingService, private toast: ToastService) {}
 
@@ -40,14 +41,42 @@ export class SubmitQuestionComponent implements OnInit {
 		this.getSubCategories();
 		this.getTags();
 	}
+	hasCategory() {
+		var hasCategory: boolean = false;
+		if (!!this.question.category) {
+			if (!!this.question.category.id) {
+				return true;
+			}
+		}
+		return false;
+	}
+	onCategoryChange() {
+		this.determineShowSubCategory();
+	}
+	determineShowSubCategory() {
+		if (!!this.question.category) {
+			var cat: Category = _.first(_.filter(this.categories, this.question.category));
+			this.showSubCategory = (!!cat.isMultipleChoice)
+		}
+	}
+	determineNumberOfInputFields() {
+		if (!!this.question.category) {
+			var cat: Category = _.first(_.filter(this.categories, this.question.category));
+			if (!!cat.hasOptions) {
+				return 3;
+			} else {
+				return 1;
+			}
+		}
+	}
 	private async getCategories() {
 		var wonGetCategories = (items) => {
 			for (var i = 0; i < items.length; i++) {
 				var item = items[i];
-				var selectListItem = new SelectListItem();
-				selectListItem.title = item.title;
-				selectListItem.itemValue = item.id;
-				this.categories.push(selectListItem);
+				// var selectListItem = new SelectListItem();
+				// selectListItem.title = item.title;
+				// selectListItem.itemValue = item.id;
+				this.categories.push(item);
 			}
 			this.categories = _.orderBy(this.categories, ['title'], ['asc'])
 			this.logger.log("WON get Categories", this.categories);
