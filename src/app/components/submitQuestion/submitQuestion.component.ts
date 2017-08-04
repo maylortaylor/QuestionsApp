@@ -10,6 +10,7 @@ import { SelectListItem } from "../../models/selectListItem.model";
 import { LoggingService } from "../../shared/logging/logging.service";
 import { GuidService } from "../../shared/guid/guid.service";
 import { AngularFireDBService } from "../../shared/angular-fire/angular-fire-db.service";
+import { ToastService } from "../../shared/toasts/toast.service";
 
 import * as _ from "lodash";
 declare var jquery: any;
@@ -17,8 +18,8 @@ declare var $: any;
 
 @Component({
 	selector: "app-submit-question",
-	templateUrl: "./submit-question.component.html",
-	styleUrls: ["./submit-question.component.less"]
+	templateUrl: "./submitQuestion.component.html",
+	styleUrls: ["./submitQuestion.component.less"]
 })
 export class SubmitQuestionComponent implements OnInit {
 	categories: Array<SelectListItem> = new Array<SelectListItem>();
@@ -27,7 +28,7 @@ export class SubmitQuestionComponent implements OnInit {
 
 	question: Question = new Question(this.guid.newGuid());
 
-	constructor(private guid: GuidService, private afdb: AngularFireDBService, private logger: LoggingService) {}
+	constructor(private guid: GuidService, private afdb: AngularFireDBService, private logger: LoggingService, private toast: ToastService) {}
 
 	routerOnActivate() {}
 	ngOnInit() {
@@ -53,6 +54,7 @@ export class SubmitQuestionComponent implements OnInit {
 		}
 		var lostGetCategories = (response) => {
 			this.logger.log("LOST get Categories", response);
+			this.toast.fail("Uh oh! Failed to get Categories!");
 		}
 
 		this.afdb.getAllFromArea("Categories").subscribe(wonGetCategories, lostGetCategories);
@@ -70,6 +72,7 @@ export class SubmitQuestionComponent implements OnInit {
 		}
 		var lostGetSubCategories = (response) => {
 			this.logger.log("LOST get Sub Categories", response);
+			this.toast.fail("Uh oh! Failed to get Sub Categories!");
 		}
 		await this.afdb.getAllFromArea("SubCategories").subscribe(wonGetSubCateories, lostGetSubCategories);
 	}
@@ -86,6 +89,7 @@ export class SubmitQuestionComponent implements OnInit {
 		}
 		var lostGetTags = (response) => {
 			this.logger.log("LOST get Tags", response);
+			this.toast.fail("Uh oh! Failed to get Tags!");
 		}
 		await this.afdb.getAllFromArea("Tags").subscribe(wonGetTags, lostGetTags);
 	}
@@ -103,13 +107,17 @@ export class SubmitQuestionComponent implements OnInit {
 		}
 		this.logger.log("Submitting Question", this.question);
 
+		var wonSubmitQuestion = (response) => {
+			this.logger.log("WON Upload Submission", this.question);
+			this.toast.success("Yay! Question uploaded!");
+		}
+		var lostSubmitQuestion = (response) => {
+			this.logger.log("LOST Upload Submission", this.question);
+			this.toast.fail("On No!! Question failed to upload!");
+		}
 		this.afdb
 			.upload("Submissions", this.question)
-			.then(() => {
-				this.logger.log("WON Upload Submission", this.question);
-			})
-			.catch(() => {
-				this.logger.log("LOST Upload Submission", this.question);
-			});
+			.then(wonSubmitQuestion)
+			.catch(lostSubmitQuestion);
 	}
 }

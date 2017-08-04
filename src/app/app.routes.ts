@@ -3,8 +3,8 @@ import { Routes, RouterModule } from "@angular/router";
 import { AuthGuard } from "./shared/auth/auth-guard.service";
 
 import { AppComponent } from "./app.component";
-import { SubmitQuestionComponent } from "./components/submit-question/submit-question.component";
-import { QuestionListComponent } from "./components/question-list/question-list.component";
+import { SubmitQuestionComponent } from "./components/submitQuestion/submitQuestion.component";
+import { QuestionListComponent } from "./components/questionList/questionList.component";
 
 export const router: Routes = [
 	{ path: "", component: QuestionListComponent },
