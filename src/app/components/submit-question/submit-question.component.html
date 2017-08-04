@@ -1,53 +1,53 @@
 <form action="#" (ngSubmit)="submitQuestion(); submitQuestionForm.resetForm()" #submitQuestionForm="ngForm">
-  <div class="row">
-    <div class="col s12">
-      <div class="row">
-        <!-- <div>{{question | json}}</div> -->
+    <div class="row">
+        <div class="col s12">
+            <div class="row">
+                <div>{{question | json}}</div>
 
-        <div *ngIf="!!categories.length" class="input-field col s12">
-          <select id="category-select" materialize="material_select" [(ngModel)]="question.categoryId" name="categoryId">
-            <option value="" disabled selected>Choose a category...</option>
-            <option [value]="cat.id" *ngFor="let cat of categories">{{ cat.title }}</option>
-          </select>
-          <label>Category</label>
+                <div *ngIf="!!categories.length" class="input-field col s12">
+                    <select id="category-select" materialize="material_select" [(ngModel)]="question.category" name="categoryId">
+                      <option value="" disabled selected>Choose a category...</option>
+                      <option [ngValue]="cat" *ngFor="let cat of categories">{{ cat.title }}</option>
+                    </select>
+                    <label>Category</label>
+                </div>
+
+                <div *ngIf="!!subCategories.length" class="input-field col s12">
+                    <select id="subcategory-select" materialize="material_select" [(ngModel)]="question.subCategory" name="subCategoryId">
+                      <option value="" disabled selected>Choose a sub category..</option>
+                      <option [ngValue]="subcat" *ngFor="let subcat of subCategories">{{ subcat.title }}</option>
+                    </select>
+                    <label>Sub Category</label>
+                </div>
+
+                <div class="input-field col s12">
+                    <input [(ngModel)]="question.questionText" name="questionText" placeholder="Type question here..." id="question" type="text" class="validate">
+                    <label for="question">Question</label>
+                </div>
+
+                <div *ngIf="!!tags.length" class="input-field col s12">
+                    <select id="tag-select" multiple materialize="material_select" [(ngModel)]="question.tags" name="tag">
+                    <option value="" disabled selected>Choose a tag...</option>
+                    <option [ngValue]="tag" *ngFor="let tag of tags">{{ tag.title }}</option>
+                  </select>
+                    <label>Tag</label>
+                </div>
+
+                <div class="divider"></div>
+
+                <div class="row">
+
+                    <div class="col m12">
+                        <p class="right-align">
+                            <button class="right-align btn waves-effect waves-light" type="submit" name="action" [disabled]="!isValidForm()">Submit
+                              <i class="material-icons right">send</i>
+                            </button>
+                        </p>
+                    </div>
+
+                </div>
+
+            </div>
         </div>
-
-        <div *ngIf="!!subCategories.length" class="input-field col s12">
-          <select id="subcategory-select" materialize="material_select" [(ngModel)]="question.subCategoryId" name="subCategoryId">
-            <option value="" disabled selected>Choose a sub category..</option>
-            <option [ngValue]="subcat.id" *ngFor="let subcat of subCategories">{{ subcat.title }}</option>
-          </select>
-          <label>Sub Category</label>
-        </div>
-
-        <div class="input-field col s12">
-          <input [(ngModel)]="question.questionText" name="questionText" placeholder="Type question here..." id="question" type="text"
-            class="validate">
-          <label for="question">Question</label>
-        </div>
-
-        <div *ngIf="!!tags.length" class="input-field col s12">
-          <select id="tag-select" multiple materialize="material_select" [(ngModel)]="question.tags" name="tag">
-            <option value="" disabled selected>Choose a tag...</option>
-            <option [ngValue]="tag.id" *ngFor="let tag of tags">{{ tag.title }}</option>
-          </select>
-          <label>Tag</label>
-        </div>
-
-        <div class="divider"></div>
-
-        <div class="row">
-          <div class="col m12">
-            <p class="right-align">
-              <button class="right-align btn waves-effect waves-light" type="submit" name="action" [disabled]="!isValidForm()">Submit
-                <i class="material-icons right">send</i>
-              </button>
-            </p>
-          </div>
-
-        </div>
-
-      </div>
     </div>
-  </div>
 </form>

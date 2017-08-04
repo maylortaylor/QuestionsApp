@@ -5,6 +5,7 @@ import { SubCategory } from "../../models/subCategory.model";
 import { Tag } from "../../models/tag.model";
 
 import { Question } from "../../models/question.model";
+import { SelectListItem } from "../../models/selectListItem.model";
 
 import { LoggingService } from "../../shared/logging/logging.service";
 import { GuidService } from "../../shared/guid/guid.service";
@@ -20,7 +21,8 @@ declare var $: any;
 	styleUrls: ["./submit-question.component.less"]
 })
 export class SubmitQuestionComponent implements OnInit {
-	categories: Array<Category> = new Array<Category>();
+	debugMode: true;
+	categories: Array<SelectListItem> = new Array<SelectListItem>();
 	subCategories: Array<SubCategory> = new Array<SubCategory>();
 	tags: Array<Tag> = new Array<Tag>();
 
@@ -38,43 +40,67 @@ export class SubmitQuestionComponent implements OnInit {
 		this.getSubCategories();
 		this.getTags();
 	}
-	async getCategories() {
-		await this.afdb.getAllFromArea("Categories").subscribe(items => {
+	private async getCategories() {
+		var wonGetCategories = (items) => {
 			for (var i = 0; i < items.length; i++) {
 				var item = items[i];
-				this.categories.push(item);
+				var selectListItem = new SelectListItem();
+				selectListItem.title = item.title;
+				selectListItem.itemValue = item.id;
+				this.categories.push(selectListItem);
 			}
-		});
+			this.categories = _.orderBy(this.categories, ['title'], ['asc'])
+			this.logger.log("WON get Categories", this.categories);
+		}
+		var lostGetCategories = (response) => {
+			this.logger.log("LOST get Categories", response);
+		}
+
+		this.afdb.getAllFromArea("Categories").subscribe(wonGetCategories, lostGetCategories);
 	}
 
-	async getSubCategories() {
-		await this.afdb.getAllFromArea("SubCategories").subscribe(items => {
+	private async getSubCategories() {
+		var wonGetSubCateories = (items) => {
 			for (var i = 0; i < items.length; i++) {
 				var item = items[i];
 				this.subCategories.push(item);
 			}
-		});
+
+			this.subCategories = _.sortBy(this.subCategories, ['title'], ['asc'])
+			this.logger.log("WON Sub Categories", this.subCategories);
+		}
+		var lostGetSubCategories = (response) => {
+			this.logger.log("LOST get Sub Categories", response);
+		}
+		await this.afdb.getAllFromArea("SubCategories").subscribe(wonGetSubCateories, lostGetSubCategories);
 	}
 
-	async getTags() {
-		await this.afdb.getAllFromArea("Tags").subscribe(items => {
+	private async getTags() {
+		var wonGetTags = (items) => {
 			for (var i = 0; i < items.length; i++) {
 				var item = items[i];
 				this.tags.push(item);
 			}
-		});
+
+			this.tags = _.sortBy(this.tags, ['title'], ['asc'])
+			this.logger.log("WON get Tags", this.tags);
+		}
+		var lostGetTags = (response) => {
+			this.logger.log("LOST get Tags", response);
+		}
+		await this.afdb.getAllFromArea("Tags").subscribe(wonGetTags, lostGetTags);
 	}
 
-	isValidForm() {
+	public isValidForm() {
 		if (!!this.question.questionText && this.question.questionText.length > 10) {
 			return true;
 		} else {
 			return false;
 		}
 	}
-	submitQuestion() {
+	public submitQuestion() {
 		if (!this.question.questionText) {
-			this.logger.log("No Question was provided", this.question);
+			this.logger.log("No Question Text was provided", this.question);
 		}
 		this.logger.log("Submitting Question", this.question);
 
