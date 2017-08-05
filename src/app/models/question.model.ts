@@ -1,5 +1,5 @@
 import { Status } from "./enums/status.enum";
-import { SelectListItem } from "./selectListItem.model"
+import { SelectListItem } from "./selectListItem.model";
 import { Category } from "./category.model";
 import { SubCategory } from "./subCategory.model";
 import { Tag } from "./tag.model";
@@ -11,7 +11,7 @@ export class Question {
 	// categoryId: any;
 	category: Category;
 	// subCategoryId: string;
-	subCategory: SubCategory
+	subCategory: SubCategory;
 	questionText: string;
 	description: string;
 	dateCreated: string;
@@ -20,14 +20,20 @@ export class Question {
 	/**
      *
      */
-	constructor(guid, isPlatform: boolean = false) {
+	constructor(guid: string, isPlatform: boolean = false, questionText: string, description: string, status: Status) {
 		this.id = guid;
 		this.tags = new Array<Tag>();
 		this.dateCreated = moment.utc().format();
+		this.questionText = questionText;
+		this.description = description;
+
 		if (isPlatform) {
 			this.status = Status.Platform;
 		} else {
 			this.status = Status.Undefined;
 		}
+
+		// override status with incoming status
+		this.status = status;
 	}
 }
