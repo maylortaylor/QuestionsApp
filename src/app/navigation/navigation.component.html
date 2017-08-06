@@ -4,18 +4,21 @@
         <a href="#" data-activates="mobile-nav" class="button-collapse"><i class="material-icons">menu</i></a>
         <ul id="nav-mobile" class="right hide-on-med-and-down">
             <li><a [hidden]="(authService.isAuthenticated())" routerLink="/login">Login</a></li>
-            <li><a [hidden]="(authService.isAuthenticated())" (click)="signInAnonymously()" href="#">Anonymous Login</a></li>
+            <li><a [hidden]="(!authService.isAuthenticated())" routerLink="/profile">Profile</a></li>
+            <!-- <li><a [hidden]="(authService.isAuthenticated())" (click)="signInAnonymously()" href="#">Anonymous Login</a></li> -->
             <li><a [hidden]="(!authService.isAuthenticated())" (click)="logOut()" href="#">Logout</a></li>
         </ul>
         <ul class="side-nav" id="mobile-nav">
             <li><a [hidden]="(authService.isAuthenticated())" routerLink="/login">Login</a></li>
-            <li><a [hidden]="(authService.isAuthenticated())" (click)="signInAnonymously()" href="#">Anonymous Login</a></li>
+            <li><a [hidden]="(!authService.isAuthenticated())" routerLink="/profile">Profile</a></li>
+            <!-- <li><a [hidden]="(authService.isAuthenticated())" (click)="signInAnonymously()" href="#">Anonymous Login</a></li> -->
             <li><a [hidden]="(!authService.isAuthenticated())" (click)="logOut()" href="#">Logout</a></li>
         </ul>
     </div>
     <div class="nav-content">
         <ul class="tabs tabs-transparent">
             <li class="tab"><a routerLink="/addquestion">Add</a></li>
+            <li *ngIf="(!!authService.isAuthenticated())" class="right user-name">Welcome {{ userService.user.displayName }}</li>
             <!-- <div class="input-field">
 
                 <input class="" type="text" id="search-expandable" [ngModel]="searchFilter" (ngModelChange)="onChange($event)" />

@@ -19,7 +19,7 @@ export class NavigationComponent implements OnInit {
 
 	constructor(
 		public authService: AuthService,
-		private userService: UserService,
+		public userService: UserService,
 		private ss: SearchService,
 		private cdr: ChangeDetectorRef,
 		private logger: LoggingService
@@ -29,19 +29,16 @@ export class NavigationComponent implements OnInit {
 	onChange(newValue: any) {
 		this.ss.addSearch(newValue);
 	}
-	ngAfterViewChecked() {
-		this.user = this.userService.getCurrentUser();
-		// if (!!this.user) {
-		// 	this.logger.log("user object on navbar", this.user);
-		// }
-	}
+	// ngAfterViewChecked() {
+	// 	this.user = this.userService.getCurrentUser();
+	// }
 
 	signInAnonymously() {
-		this.logger.log("SIGNING IN ANONYMOUSLY");
 		this.authService.signInAnonymously();
+		this.logger.log("SIGNING IN ANONYMOUSLY");
 	}
 	logOut() {
-		this.logger.log("LOGGING OUT");
 		this.authService.logout();
+		this.logger.log("LOGGING OUT");
 	}
 }

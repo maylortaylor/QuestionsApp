@@ -1,0 +1,25 @@
+<div class="row">
+  <div class="col s5 user-sidebar">
+    <div class="row">
+      Email: {{ userService.user.email }}
+      <img [hidden]="!userService.user.photoUrl" src="{{userService.user.photoUrl}}" alt="">
+
+      <form [hidden]="!!userService.user.photoUrl" action="#">
+        <div class="file-field input-field">
+          <div class="btn">
+            <span>Upload Image</span>
+            <input type="file">
+          </div>
+          <div class="file-path-wrapper">
+            <input class="file-path validate" type="text">
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="col s7">
+    <p>
+      Welcome {{ userService.user.displayName }}
+    </p>
+  </div>
+</div>

@@ -4,11 +4,15 @@ import { AngularFireAuth } from "angularfire2/auth";
 import { UserModel } from "./user.model";
 
 import { LoggingService } from "../../shared/logging/logging.service";
+import { ToastService } from "../../shared/toasts/toast.service";
+// import { AuthService } from "../../shared/auth/auth.service";
+
 @Injectable()
 export class UserService {
-	user: UserModel = new UserModel();
+	user: UserModel = null;
+	userIsLoggedIn: boolean = false;
 
-	constructor(private afAuth: AngularFireAuth, private af: AngularFireDatabase, private logger: LoggingService) {
+	constructor(private afAuth: AngularFireAuth, private af: AngularFireDatabase, private logger: LoggingService, private toast: ToastService) {
 		//this.checkLoginStatus();
 		this.setUser(this.afAuth.auth.currentUser);
 	}
@@ -20,6 +24,7 @@ export class UserService {
 	setUser(user: any): void {
 		if (!!user) {
 			// User is signed in.
+			this.user = new UserModel();
 			this.user.uid = user.uid;
 			this.user.email = user.email;
 			this.user.emailVerified = user.emailVerified;
@@ -34,21 +39,15 @@ export class UserService {
 		}
 	}
 	clearUser(): void {
-		this.user = new UserModel();
-	}
-	isAuthenticated(): boolean {
-		return !!this.afAuth.auth.currentUser ? true : false;
-	}
-	signInAnonymously(): void {
-		this.afAuth.auth.signInAnonymously();
-	}
-
-	signOut(): void {
-		this.afAuth.auth.signOut();
+		this.user = null;
 	}
 	getCurrentUser(): UserModel {
-		if (this.isAuthenticated()) {
+		var isLoggedIn = !!this.afAuth.auth.currentUser;
+		if (!!isLoggedIn) {
 			this.setUser(this.afAuth.auth.currentUser);
+			this.userIsLoggedIn = true;
+			// this.toast.success("User is Logged In");
+			this.logger.log("User:", this.user);
 			return this.user;
 		} else {
 			return null;
