@@ -1,9 +1,38 @@
 import { Injectable } from "@angular/core";
-
+import { Category } from "../../../models/category.model";
+import { CategoryType } from "../../../models/enums/categoryType.enum";
 @Injectable()
 export class MultiInputLabelDeterminerService {
 	constructor() {}
-	determineFuckMaryKill(category, index) {
+	public multipleInputFields(category: Category, index: number): string {
+		switch (category.type) {
+			case CategoryType.FuckMaryKill:
+				return this.determineFuckMaryKill(category, index);
+			case CategoryType.Pick3:
+				return this.determinePickTop3(category, index);
+			case CategoryType.Pick5:
+				return this.determinePickTop5(category, index);
+			case CategoryType.WouldYouRather:
+				if (index == 0) {
+					return "Do this...";
+				} else {
+					return "Or do this...";
+				}
+		}
+	}
+	public singleInputField(category: Category, index: number): string {
+		switch (category.type) {
+			case CategoryType.DevilsAdvocate:
+				return "Question";
+			case CategoryType.OpenEnded:
+				return "Question";
+			case CategoryType.PickFavorite:
+				return "What is your favorite ..";
+			default:
+				return "Ouestion";
+		}
+	}
+	private determineFuckMaryKill(category: Category, index: number): string {
 		switch (index) {
 			case 0:
 				return "Fuck";
@@ -13,7 +42,7 @@ export class MultiInputLabelDeterminerService {
 				return "Kill";
 		}
 	}
-	determinePickTop3(category, index) {
+	private determinePickTop3(category: Category, index: number): string {
 		switch (index) {
 			case 0:
 				return "Choice 1";
@@ -23,7 +52,7 @@ export class MultiInputLabelDeterminerService {
 				return "Choice 3";
 		}
 	}
-	determinePickTop5(category, index) {
+	private determinePickTop5(category: Category, index: number): string {
 		switch (index) {
 			case 0:
 				return "Choice 1";

@@ -1,15 +1,52 @@
-<div class="row">
+<div [hidden]="!!questions.length" class="row">
+    <div class="col s12 center-text">
+        <h4>
+            Sorry! No Questions Have Been Submitted!
+        </h4>
+    </div>
+</div>
+<!-- Search Area -->
+<div [hidden]="!questions.length" class="row">
+    <div class="col s12">
+
+        <!-- Search Box -->
+        <div class="input-field col s12">
+            <input [(ngModel)]="searchText" name="searchText" placeholder="" id="searchText" type="text">
+            <label for="searchText">Search Question</label>
+        </div>
+
+        <!-- Tag Dropdown -->
+        <a [hidden]="!tagsForFilter.length" class='dropdown-button btn' href='#' data-activates='tagFilterDropdown'>Tag Filter</a>
+        <ul id='tagFilterDropdown' class='dropdown-content'>
+            <li *ngFor="let tag of tagsForFilter"><a href="#!" (click)="setTagFilter(tag)">{{tag.title}}</a></li>
+        </ul>
+
+        <!-- Category Dropdown -->
+        <a [hidden]="!categoriesForFilter.length" class='dropdown-button btn' href='#' data-activates='categoryFilterDropdown'>Category Filter</a>
+        <ul id='categoryFilterDropdown' class='dropdown-content'>
+            <li *ngFor="let cat of categoriesForFilter"><a href="#!" (click)="setCategoryFilter(cat)">{{cat.title}}</a></li>
+        </ul>
+
+        <!-- Sub Category Dropdown -->
+        <a [hidden]="!subCategoriesForFilter.length" class='dropdown-button btn' href='#' data-activates='subCategoryFilterDropdown'>Sub Category Filter</a>
+        <ul id='subCategoryFilterDropdown' class='dropdown-content'>
+            <li *ngFor="let subCat of subCategoriesForFilter"><a href="#!" (click)="setSubCategoryFilter(subCat)">{{subCat.title}}</a></li>
+        </ul>
+
+    </div>
+</div>
+<div [hidden]="!questions" class="row">
     <div *ngFor="let question of questions">
         <div class="col s12 m6">
 
             <div class="card z-depth-3">
                 <div class="card-content">
                     <span class="card-title">{{ question.questionText }}</span>
-                    <div class="card-padding category-area flow-text">
-                        <span>{{question.category.title}}</span> / <span>{{question.subCategory.title}}</span>
+                    <div *ngIf="!!question.category.title" class="card-padding category-area flow-text">
+                        <span>{{question.category.title}}</span><span *ngIf="!!question.subCategory"> / {{question.subCategory.title}}</span>
                     </div>
 
-                    <div class="tag-padding">
+                    <div *ngIf="!!question.tags" class="tag-padding">
                         <div class="chip" *ngFor="let tag of question.tags">
                             {{tag.title}}
                         </div>

@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { NgForm } from "@angular/forms";
+import { FormBuilder, Validators, NgForm } from "@angular/forms";
 
 import { Category } from "../../models/category.model";
 import { CategoryType } from "../../models/enums/categoryType.enum";
@@ -14,6 +14,8 @@ import { GuidService } from "../../shared/guid/guid.service";
 import { AngularFireDBService } from "../../shared/angular-fire/angular-fire-db.service";
 import { ToastService } from "../../shared/toasts/toast.service";
 import { MultiInputLabelDeterminerService } from "./services/MultiInputLabelDeterminer.service";
+import { SubmitQuestionFormValidatorService } from "./services/SubmitQuestionFormValidator.service";
+import { NumberOfInputFieldDeterminerService } from "./services/NumberOfInputFieldDeterminer.service";
 
 import * as _ from "lodash";
 declare var jquery: any;
@@ -25,6 +27,7 @@ declare var $: any;
 	styleUrls: ["./submitQuestion.component.less"]
 })
 export class SubmitQuestionComponent implements OnInit {
+	submitQuestionForm: any;
 	categories: Array<Category> = new Array<Category>();
 	subCategories: Array<SubCategory> = new Array<SubCategory>();
 	tags: Array<Tag> = new Array<Tag>();
@@ -33,13 +36,27 @@ export class SubmitQuestionComponent implements OnInit {
 	question: Question = new Question(this.guid.newGuid(), false);
 	showSubCategory: boolean = false;
 
+	minLengthOfMultiInputs: number = 4;
+	minLengthOfSingleInput: number = 10;
+
 	constructor(
+		private formBuilder: FormBuilder,
 		private guid: GuidService,
 		private afdb: AngularFireDBService,
 		private logger: LoggingService,
 		private toast: ToastService,
-		private labelService: MultiInputLabelDeterminerService
-	) {}
+		private labelService: MultiInputLabelDeterminerService,
+		private formValidator: SubmitQuestionFormValidatorService,
+		private inputCount: NumberOfInputFieldDeterminerService
+	) {
+		// prettier-ignore
+		// TODO get angular validators working
+		// this.submitQuestionForm = this.formBuilder.group({
+		// 	'questionText': ["", Validators.required, Validators.minLength(10)]
+		// 	// email: ["", [Validators.required]],
+		// 	// profile: ["", [Validators.required, Validators.minLength(10)]]
+		// });
+	}
 
 	routerOnActivate() {}
 	ngOnInit() {
@@ -51,6 +68,12 @@ export class SubmitQuestionComponent implements OnInit {
 		this.getSubCategories();
 		this.getTags();
 	}
+	onCategoryChange(submitQuestionForm: NgForm) {
+		this.determineShowSubCategory();
+	}
+	public indexTrackBy(index: number, obj: any): any {
+		return index;
+	}
 	public hasCategory() {
 		var hasCategory: boolean = false;
 		if (!!this.question.category) {
@@ -60,36 +83,24 @@ export class SubmitQuestionComponent implements OnInit {
 		}
 		return false;
 	}
-	onCategoryChange(submitQuestionForm: NgForm) {
-		this.determineShowSubCategory();
-	}
 	private determineShowSubCategory() {
 		if (!!this.question.category) {
 			var cat: Category = _.first(_.filter(this.categories, this.question.category));
 			this.showSubCategory = !!cat.hasSubCategories;
 		}
 	}
-	public indexTrackBy(index: number, obj: any): any {
-		return index;
-	}
 	public determineNumberOfInputFields() {
-		if (!!this.question.category) {
-			var cat: Category = _.first(_.filter(this.categories, this.question.category));
-			if (cat.numberOfChoices > 1) {
-				this.questionItems = new Array<string>(cat.numberOfChoices);
-				return cat.numberOfChoices;
-			}
-			return cat.numberOfChoices;
+		var numberOfInputFields: number = this.inputCount.determineNumberOfInputFields(this.question);
+		if (numberOfInputFields > 1 && numberOfInputFields != Number.MAX_VALUE) {
+			this.questionItems = new Array<string>(numberOfInputFields);
 		}
+		return numberOfInputFields;
 	}
 	public determindQuestionItemLabel(category: Category, index: number) {
-		switch (category.type) {
-			case CategoryType.FuckMaryKill:
-				return this.labelService.determineFuckMaryKill(category, index);
-			case CategoryType.Pick3:
-				return this.labelService.determinePickTop3(category, index);
-			case CategoryType.Pick5:
-				return this.labelService.determinePickTop5(category, index);
+		if (this.determineNumberOfInputFields() > 1) {
+			return this.labelService.multipleInputFields(category, index);
+		} else {
+			return this.labelService.singleInputField(category, index);
 		}
 	}
 	public hasMaxNumberOfChoices() {
@@ -103,9 +114,6 @@ export class SubmitQuestionComponent implements OnInit {
 		var wonGetCategories = items => {
 			for (var i = 0; i < items.length; i++) {
 				var item = items[i];
-				// var selectListItem = new SelectListItem();
-				// selectListItem.title = item.title;
-				// selectListItem.itemValue = item.id;
 				this.categories.push(item);
 			}
 			this.categories = _.orderBy(this.categories, ["title"], ["asc"]);
@@ -154,33 +162,10 @@ export class SubmitQuestionComponent implements OnInit {
 	}
 
 	public isValidForm() {
-		if (this.determineNumberOfInputFields() > 1) {
-			switch (this.question.questionItems.length) {
-				case 3:
-					if (!!this.question.questionItems[0] && !!this.question.questionItems[1] && !!this.question.questionItems[2]) {
-						return true;
-					} else {
-						return false;
-					}
-				case 5:
-					if (
-						!!this.question.questionItems[0] &&
-						!!this.question.questionItems[1] &&
-						!!this.question.questionItems[2] &&
-						!!this.question.questionItems[3] &&
-						!!this.question.questionItems[4]
-					) {
-						return true;
-					} else {
-						return false;
-					}
-			}
+		if (!!this.question) {
+			return this.formValidator.isSubmitQuestionFormValid(this.question);
 		} else {
-			if (!!this.question.questionText && this.question.questionText.length > 10) {
-				return true;
-			} else {
-				return false;
-			}
+			return false;
 		}
 	}
 	public submitQuestion(submitQuestionForm: NgForm) {

@@ -28,21 +28,25 @@
                 <!-- Would You Rather -->
                 <div *ngIf="hasMaxNumberOfChoices()">
                     <div class="input-field col s6">
-                        <input [(ngModel)]="question.questionItems[0]" name="questionText" placeholder="" id="question" type="text" class="validate">
-                        <label for="question">Do this..</label>
+                        <input [(ngModel)]="question.questionItems[0]" minlength="minLengthOfMultiInputs" name="questionText" placeholder="" id="question"
+                            type="text" class="validate">
+                        <label for="question">{{determindQuestionItemLabel(question.category, 0)}}</label>
                     </div>
                     <div class="input-field col s6">
-                        <input [(ngModel)]="question.questionItems[1]" name="questionText" placeholder="" id="question" type="text" class="validate">
-                        <label for="question">Or do this..</label>
+                        <input [(ngModel)]="question.questionItems[1]" minlength="minLengthOfMultiInputs" name="questionText" placeholder="" id="question"
+                            type="text" class="validate">
+                        <label for="question">{{determindQuestionItemLabel(question.category, 1)}}</label>
                     </div>
                 </div>
 
                 <!-- Has Variable count of NumberOfChoices -->
                 <div [ngSwitch]="determineNumberOfInputFields()" *ngIf="!hasMaxNumberOfChoices()">
+
+                    <!-- Single Input Field -->
                     <div *ngSwitchCase="1">
                         <div class="input-field col s12">
                             <input [(ngModel)]="question.questionText" name="questionText" placeholder="" id="question" type="text" class="validate">
-                            <label for="question">Question</label>
+                            <label for="question">{{determindQuestionItemLabel(question.category, 0)}}</label>
                         </div>
                     </div>
 
@@ -51,8 +55,8 @@
 
                         <div class="row">
                             <div class="input-field col s4" *ngFor="let item of questionItems;let i=index; trackBy: indexTrackBy">
-                                <input [value]="question.questionItems[i]" [(ngModel)]="question.questionItems[i]" id="questionInput{{i}}" name="questionInput{{i}}"
-                                    placeholder="" type="text" class="validate">
+                                <input [value]="question.questionItems[i]" minlength="minLengthOfMultiInputs" [(ngModel)]="question.questionItems[i]" id="questionInput{{i}}"
+                                    name="questionInput{{i}}" placeholder="" type="text" class="validate">
                                 <label for="input{{i}}">{{determindQuestionItemLabel(question.category, i)}}</label>
                             </div>
                         </div>
@@ -64,8 +68,8 @@
 
                         <div class="row">
                             <div class="input-field col s2" *ngFor="let item of questionItems;let i=index; trackBy: indexTrackBy">
-                                <input [value]="question.questionItems[i]" [(ngModel)]="question.questionItems[i]" id="questionInput{{i}}" name="questionInput{{i}}"
-                                    placeholder="" type="text" class="validate">
+                                <input [value]="question.questionItems[i]" minlength="minLengthOfMultiInputs" [(ngModel)]="question.questionItems[i]" id="questionInput{{i}}"
+                                    name="questionInput{{i}}" placeholder="" type="text" class="validate">
                                 <label for="input{{i}}">{{determindQuestionItemLabel(question.category, i)}}</label>
                             </div>
                         </div>

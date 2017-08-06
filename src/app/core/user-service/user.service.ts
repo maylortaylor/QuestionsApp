@@ -3,19 +3,21 @@ import { AngularFireDatabase, FirebaseListObservable } from "angularfire2/databa
 import { AngularFireAuth } from "angularfire2/auth";
 import { UserModel } from "./user.model";
 
+import { LoggingService } from "../../shared/logging/logging.service";
 @Injectable()
 export class UserService {
 	user: UserModel = new UserModel();
 
-	constructor(public afAuth: AngularFireAuth, public af: AngularFireDatabase) {
+	constructor(private afAuth: AngularFireAuth, private af: AngularFireDatabase, private logger: LoggingService) {
 		//this.checkLoginStatus();
+		this.setUser(this.afAuth.auth.currentUser);
 	}
-	checkLoginStatus() {
+	checkLoginStatus(): void {
 		this.afAuth.auth.onAuthStateChanged(user => {
 			this.setUser(user);
 		});
 	}
-	setUser(user: any) {
+	setUser(user: any): void {
 		if (!!user) {
 			// User is signed in.
 			this.user.uid = user.uid;
@@ -25,28 +27,28 @@ export class UserService {
 			this.user.photoUrl = user.photoUrl;
 			this.user.refreshToken = user.refreshToken;
 
-			console.log("LOGGED IN USER", this.user);
+			this.logger.log("LOGGED IN USER", this.user);
 		} else {
 			// No user is signed in.
-			console.log("not logged in");
+			this.logger.log("not logged in");
 		}
 	}
-	clearUser() {
+	clearUser(): void {
 		this.user = new UserModel();
 	}
-	isAuthenticated() {
-		return !!this.afAuth.auth.currentUser.uid ? true : false;
+	isAuthenticated(): boolean {
+		return !!this.afAuth.auth.currentUser ? true : false;
 	}
-	signInAnonymously() {
+	signInAnonymously(): void {
 		this.afAuth.auth.signInAnonymously();
 	}
 
-	signOut() {
+	signOut(): void {
 		this.afAuth.auth.signOut();
 	}
-	getCurrentUser() {
-		if (!!this.user.uid) {
-			// delete this.user.uid;
+	getCurrentUser(): UserModel {
+		if (this.isAuthenticated()) {
+			this.setUser(this.afAuth.auth.currentUser);
 			return this.user;
 		} else {
 			return null;

@@ -1,8 +1,18 @@
 import { Component, OnInit } from "@angular/core";
+import { Subscription } from "rxjs/Subscription";
+
 import { Question } from "../../models/question.model";
+import { Tag } from "../../models/tag.model";
+import { Category } from "../../models/category.model";
+import { SubCategory } from "../../models/SubCategory.model";
+
 import { LoggingService } from "../../shared/logging/logging.service";
 import { AngularFireDBService } from "../../shared/angular-fire/angular-fire-db.service";
 import { ToastService } from "../../shared/toasts/toast.service";
+import { SearchService } from "../../shared/filters/search.service";
+
+import * as _ from "lodash";
+declare var jquery: any;
 
 @Component({
 	selector: "app-question-list",
@@ -10,22 +20,76 @@ import { ToastService } from "../../shared/toasts/toast.service";
 	styleUrls: ["./questionList.component.less"]
 })
 export class QuestionListComponent implements OnInit {
+	private question: Subscription;
+	searchText: string;
 	questions: Array<Question> = new Array<Question>();
-	constructor(private afdb: AngularFireDBService, private logger: LoggingService, private toast: ToastService) {}
-
-	routerOnActivate(){
-
-	}
-	ngOnInit() {
+	tagsForFilter: Array<Tag> = new Array<Tag>();
+	categoriesForFilter: Array<Category> = new Array<Category>();
+	subCategoriesForFilter: Array<SubCategory> = new Array<SubCategory>();
+	constructor(private ss: SearchService, private afdb: AngularFireDBService, private logger: LoggingService, private toast: ToastService) {
 		this.getQuestions();
 	}
-	private getQuestions() {
+
+	ngOnInit() {}
+
+	private async getQuestions() {
 		this.afdb.getAllFromArea("Submissions").subscribe(items => {
 			for (var i = 0; i < items.length; i++) {
 				var question = items[i];
 				this.questions.push(question);
 			}
+			if (!!this.questions.length) {
+				this.populateFilters(this.questions);
+			}
 		});
+
 		this.logger.log("Questions", this.questions);
+	}
+	public setTagFilter(tag: Tag) {
+		this.logger.log("Filtering Tag: ", tag.title);
+	}
+	public setCategoryFilter(cat: Category) {
+		this.logger.log("Filtering Category: ", cat.title);
+	}
+
+	private populateFilters(questions: Array<Question>) {
+		this.getTagsForFilter(this.questions);
+		this.getCategoriesForFilter(this.questions);
+		this.getSubCategoriesForFilter(this.questions);
+	}
+	private async getCategoriesForFilter(questions: Array<Question>) {
+		for (var i = 0; i < questions.length; i++) {
+			var q = questions[i];
+			if (!!q.category) {
+				this.categoriesForFilter.push(q.category);
+			}
+		}
+		this.categoriesForFilter = _.uniqBy(this.categoriesForFilter, "id");
+		this.logger.log("Categories For Filter: ", this.categoriesForFilter);
+	}
+	private async getSubCategoriesForFilter(questions: Array<Question>) {
+		for (var i = 0; i < questions.length; i++) {
+			var q = questions[i];
+			if (!!q.subCategory) {
+				this.subCategoriesForFilter.push(q.subCategory);
+			}
+		}
+		this.subCategoriesForFilter = _.uniqBy(this.subCategoriesForFilter, "id");
+		this.logger.log("Sub Categories For Filter: ", this.subCategoriesForFilter);
+	}
+	private async getTagsForFilter(questions: Array<Question>) {
+		for (var i = 0; i < questions.length; i++) {
+			var q = questions[i];
+			if (!!q.tags) {
+				for (var t = 0; t < q.tags.length; t++) {
+					var tag = q.tags[t];
+					if (!!tag) {
+						this.tagsForFilter.push(tag);
+					}
+				}
+			}
+		}
+		this.tagsForFilter = _.uniqBy(this.tagsForFilter, "id");
+		this.logger.log("Tags For Filter: ", this.tagsForFilter);
 	}
 }

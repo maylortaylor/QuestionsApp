@@ -1,7 +1,9 @@
 import { Injectable } from "@angular/core";
 import { AngularFireDatabase, FirebaseListObservable } from "angularfire2/database";
 import { AngularFireAuth } from "angularfire2/auth";
+
 import { UserService } from "../../core/user-service/user.service";
+import { UserModel } from "../../core/user-service/user.model";
 
 import { Observable } from "rxjs/Observable";
 import "rxjs/add/observable/of";
@@ -18,17 +20,14 @@ export class AuthService {
 	// store the URL so we can redirect after logging in
 	redirectUrl: string;
 
-	//   login(): Observable<boolean> {
-	//     return Observable.of(true).delay(1000).do(val => (this.isLoggedIn = true));
-	//   }
 	isAuthenticated(): boolean {
 		this.isLoggedIn = !!this.afAuth.auth.currentUser ? true : false;
 		return !!this.afAuth.auth.currentUser ? true : false;
 	}
-	getCurrentUser() {
+	getCurrentUser(): UserModel {
 		return this.userService.getCurrentUser();
 	}
-	signInGoogle() {
+	signInGoogle(): void {
 		this.afAuth.auth
 			.signInWithPopup(new firebase.auth.GoogleAuthProvider())
 			.then((result: any) => {
@@ -50,7 +49,7 @@ export class AuthService {
 				var credential = error.credential;
 			});
 	}
-	signInAnonymously() {
+	signInAnonymously(): void {
 		this.afAuth.auth
 			.signInAnonymously()
 			.then(value => {
@@ -61,7 +60,7 @@ export class AuthService {
 				console.log("LOST Sign In Anonymously:", err);
 			});
 	}
-	logout() {
+	logout(): void {
 		this.afAuth.auth
 			.signOut()
 			.then(value => {
@@ -73,7 +72,7 @@ export class AuthService {
 				console.log("LOST LogOut:", err);
 			});
 	}
-	login(email: string, password: string) {
+	login(email: string, password: string): void {
 		this.afAuth.auth
 			.signInWithEmailAndPassword(email, password)
 			.then(value => {
@@ -84,7 +83,7 @@ export class AuthService {
 				console.log("LOST Login:", err);
 			});
 	}
-	signup(email: string, password: string) {
+	signup(email: string, password: string): void {
 		this.afAuth.auth
 			.createUserWithEmailAndPassword(email, password)
 			.then(value => {

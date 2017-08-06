@@ -4,7 +4,7 @@ import { AuthService } from "../shared/auth/auth.service";
 import { UserService } from "../core/user-service/user.service";
 import { UserModel } from "../core/user-service/user.model";
 import { SearchService } from "../shared/filters/search.service";
-
+import { LoggingService } from "../shared/logging/logging.service";
 @Component({
 	selector: "app-navigation",
 	templateUrl: "./navigation.component.html",
@@ -17,7 +17,13 @@ export class NavigationComponent implements OnInit {
 
 	title: string = "No Right Answer";
 
-	constructor(public authService: AuthService, private userService: UserService, private ss: SearchService, private cdr: ChangeDetectorRef) {}
+	constructor(
+		public authService: AuthService,
+		private userService: UserService,
+		private ss: SearchService,
+		private cdr: ChangeDetectorRef,
+		private logger: LoggingService
+	) {}
 
 	ngOnInit() {}
 	onChange(newValue: any) {
@@ -25,15 +31,17 @@ export class NavigationComponent implements OnInit {
 	}
 	ngAfterViewChecked() {
 		this.user = this.userService.getCurrentUser();
-		if (!!this.user) console.log("user object on navbar", this.user);
+		// if (!!this.user) {
+		// 	this.logger.log("user object on navbar", this.user);
+		// }
 	}
 
 	signInAnonymously() {
-		console.log("SIGNING IN ANONYMOUSLY");
+		this.logger.log("SIGNING IN ANONYMOUSLY");
 		this.authService.signInAnonymously();
 	}
 	logOut() {
-		console.log("LOGGING OUT");
+		this.logger.log("LOGGING OUT");
 		this.authService.logout();
 	}
 }
