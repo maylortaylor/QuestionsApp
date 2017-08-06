@@ -2,10 +2,11 @@
     <div class="row">
         <div class="col s12">
             <div class="row">
-                <!-- <div>{{question | json}}</div> -->
+                <div>{{question | json}}</div>
 
                 <div *ngIf="!!categories.length" class="input-field col s12">
-                    <select id="category-select" materialize="material_select" [(ngModel)]="question.category" (ngModelChange)="onCategoryChange()" name="categoryId">
+                    <select id="category-select" materialize="material_select" [(ngModel)]="question.category" (ngModelChange)="onCategoryChange()"
+                        name="categoryId">
                       <option value="" disabled selected>Choose a category...</option>
                       <option [ngValue]="cat" *ngFor="let cat of categories">{{ cat.title }}</option>
                     </select>
@@ -21,13 +22,58 @@
                 </div>
 
                 <div [ngSwitch]="determineNumberOfInputFields()">
-                    <div *ngSwitchCase="1" class="input-field col s12">
-                        <input [(ngModel)]="question.questionText" name="questionText" placeholder="Type question here..." id="question" type="text" class="validate">
-                        <label for="question">Question</label>
+                    <div *ngSwitchCase="1">
+                        <div class="input-field col s12">
+                            <input [(ngModel)]="question.questionText" name="questionText" placeholder="Type question here..." id="question" type="text"
+                                class="validate">
+                            <label for="question">Question</label>
+                        </div>
                     </div>
-                    <div *ngSwitchCase="3" class="input-field col s12">
-                        <input [(ngModel)]="question.questionText" name="questionText" placeholder="Type question here..." id="question" type="text" class="validate">
-                        <label for="question">Question</label>
+                    <div *ngSwitchCase="3">
+
+                        <div class="row">
+                            <div class="input-field col s4" *ngFor="let item of questionInputs;let i=index; trackBy: customTrackBy">
+                                <input [value]="question.questionInputs[i]" [(ngModel)]="question.questionInputs[i]" id="questionInput{{i}}" name="questionInput{{i}}"
+                                    placeholder="Type question here..." type="text" class="validate">
+                                <label for="input{{i}}">Input {{i}}</label>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div *ngSwitchCase="5">
+
+                        <div class="row">
+                            <div class="input-field col s2">
+                                <input [(ngModel)]="question.questionInputs[0]" name="questionText" placeholder="Type question here..." id="input1" type="text"
+                                    class="validate">
+                                <label for="input1">Input 1</label>
+                            </div>
+
+                            <div class="input-field col s2">
+                                <input [(ngModel)]="question.questionInputs[1]" name="questionText" placeholder="Type question here..." id="input2" type="text"
+                                    class="validate">
+                                <label for="input2">Input 2</label>
+                            </div>
+
+                            <div class="input-field col s2">
+                                <input [(ngModel)]="question.questionInputs[2]" name="questionText" placeholder="Type question here..." id="input3" type="text"
+                                    class="validate">
+                                <label for="input3">Input 3</label>
+                            </div>
+
+                            <div class="input-field col s2">
+                                <input [(ngModel)]="question.questionInputs[3]" name="questionText" placeholder="Type question here..." id="input2" type="text"
+                                    class="validate">
+                                <label for="input4">Input 4</label>
+                            </div>
+
+                            <div class="input-field col s2">
+                                <input [(ngModel)]="question.questionInputs[4]" name="questionText" placeholder="Type question here..." id="input3" type="text"
+                                    class="validate">
+                                <label for="input5">Input 5</label>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
 

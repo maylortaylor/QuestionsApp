@@ -28,25 +28,6 @@ export class AngularFireDbSeeder {
 		new SubCategory(this.guid.newGuid(), true, "Male", null, Status.Platform),
 		new SubCategory(this.guid.newGuid(), true, "Female", null, Status.Platform)
 	];
-	// private tagsForSeed: any = [
-	// 	"SFW",
-	// 	"NSFW",
-	// 	"PC (politically correct)",
-	// 	"non-PC (not politically correct)",
-	// 	"People",
-	// 	"Places",
-	// 	"Things",
-	// 	"Politics",
-	// 	"Religion",
-	// 	"Nerd",
-	// 	"Books",
-	// 	"Music",
-	// 	"Technology",
-	// 	"Geek",
-	// 	"Movies",
-	// 	"Movie Fights",
-	// 	"Comics"
-	// ];
 	private tagsForSeed: Array<Tag> = [
 		new Tag(this.guid.newGuid(), true, "SFW", null, Status.Platform),
 		new Tag(this.guid.newGuid(), true, "NSFW", null, Status.Platform),

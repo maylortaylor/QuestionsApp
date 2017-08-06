@@ -25,16 +25,19 @@ export class Category extends BaseSettings {
 		type: CategoryType,
 		hasOptions: boolean,
 		isMultipleChoice: boolean,
-		numberOfChoice: number = 1
+		numberOfChoices: number = 1
 	) {
 		super();
 
 		this.id = guid;
+		this.title = title;
+		this.description = description;
+		this.type = type;
 		this.subCategories = new Array<SubCategory>();
 		this.dateCreated = moment.utc().format();
 		this.hasOptions = hasOptions;
 		this.isMultipleChoice = isMultipleChoice;
-		this.numberOfChoices = !!this.isMultipleChoice ? numberOfChoice : 1;
+		this.numberOfChoices = !!this.isMultipleChoice ? numberOfChoices : 1;
 
 		if (isPlatform) {
 			this.status = Status.Platform;

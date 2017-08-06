@@ -25,8 +25,9 @@ export class SubmitQuestionComponent implements OnInit {
 	categories: Array<Category> = new Array<Category>();
 	subCategories: Array<SubCategory> = new Array<SubCategory>();
 	tags: Array<Tag> = new Array<Tag>();
+	questionInputs: Array<string> = new Array<string>();
 
-	question: Question = new Question(this.guid.newGuid());
+	question: Question = new Question(this.guid.newGuid(), false);
 	showSubCategory: boolean = false;
 
 	constructor(private guid: GuidService, private afdb: AngularFireDBService, private logger: LoggingService, private toast: ToastService) {}
@@ -56,21 +57,24 @@ export class SubmitQuestionComponent implements OnInit {
 	determineShowSubCategory() {
 		if (!!this.question.category) {
 			var cat: Category = _.first(_.filter(this.categories, this.question.category));
-			this.showSubCategory = (!!cat.isMultipleChoice)
+			this.showSubCategory = !!cat.isMultipleChoice;
 		}
+	}
+	customTrackBy(index: number, obj: any): any {
+		return index;
 	}
 	determineNumberOfInputFields() {
 		if (!!this.question.category) {
 			var cat: Category = _.first(_.filter(this.categories, this.question.category));
-			if (!!cat.hasOptions) {
-				return 3;
-			} else {
-				return 1;
+			if (cat.numberOfChoices > 1) {
+				this.questionInputs = new Array<string>(cat.numberOfChoices);
+				return cat.numberOfChoices;
 			}
+			return cat.numberOfChoices;
 		}
 	}
 	private async getCategories() {
-		var wonGetCategories = (items) => {
+		var wonGetCategories = items => {
 			for (var i = 0; i < items.length; i++) {
 				var item = items[i];
 				// var selectListItem = new SelectListItem();
@@ -78,48 +82,48 @@ export class SubmitQuestionComponent implements OnInit {
 				// selectListItem.itemValue = item.id;
 				this.categories.push(item);
 			}
-			this.categories = _.orderBy(this.categories, ['title'], ['asc'])
+			this.categories = _.orderBy(this.categories, ["title"], ["asc"]);
 			this.logger.log("WON get Categories", this.categories);
-		}
-		var lostGetCategories = (response) => {
+		};
+		var lostGetCategories = response => {
 			this.logger.log("LOST get Categories", response);
 			this.toast.fail("Uh oh! Failed to get Categories!");
-		}
+		};
 
 		this.afdb.getAllFromArea("Categories").subscribe(wonGetCategories, lostGetCategories);
 	}
 
 	private async getSubCategories() {
-		var wonGetSubCateories = (items) => {
+		var wonGetSubCateories = items => {
 			for (var i = 0; i < items.length; i++) {
 				var item = items[i];
 				this.subCategories.push(item);
 			}
 
-			this.subCategories = _.sortBy(this.subCategories, ['title'], ['asc'])
+			this.subCategories = _.sortBy(this.subCategories, ["title"], ["asc"]);
 			this.logger.log("WON Sub Categories", this.subCategories);
-		}
-		var lostGetSubCategories = (response) => {
+		};
+		var lostGetSubCategories = response => {
 			this.logger.log("LOST get Sub Categories", response);
 			this.toast.fail("Uh oh! Failed to get Sub Categories!");
-		}
+		};
 		await this.afdb.getAllFromArea("SubCategories").subscribe(wonGetSubCateories, lostGetSubCategories);
 	}
 
 	private async getTags() {
-		var wonGetTags = (items) => {
+		var wonGetTags = items => {
 			for (var i = 0; i < items.length; i++) {
 				var item = items[i];
 				this.tags.push(item);
 			}
 
-			this.tags = _.sortBy(this.tags, ['title'], ['asc'])
+			this.tags = _.sortBy(this.tags, ["title"], ["asc"]);
 			this.logger.log("WON get Tags", this.tags);
-		}
-		var lostGetTags = (response) => {
+		};
+		var lostGetTags = response => {
 			this.logger.log("LOST get Tags", response);
 			this.toast.fail("Uh oh! Failed to get Tags!");
-		}
+		};
 		await this.afdb.getAllFromArea("Tags").subscribe(wonGetTags, lostGetTags);
 	}
 
@@ -136,17 +140,14 @@ export class SubmitQuestionComponent implements OnInit {
 		}
 		this.logger.log("Submitting Question", this.question);
 
-		var wonSubmitQuestion = (response) => {
+		var wonSubmitQuestion = response => {
 			this.logger.log("WON Upload Submission", this.question);
 			this.toast.success("Yay! Question uploaded!");
-		}
-		var lostSubmitQuestion = (response) => {
+		};
+		var lostSubmitQuestion = response => {
 			this.logger.log("LOST Upload Submission", this.question);
 			this.toast.fail("On No!! Question failed to upload!");
-		}
-		this.afdb
-			.upload("Submissions", this.question)
-			.then(wonSubmitQuestion)
-			.catch(lostSubmitQuestion);
+		};
+		this.afdb.upload("Submissions", this.question).then(wonSubmitQuestion).catch(lostSubmitQuestion);
 	}
 }
