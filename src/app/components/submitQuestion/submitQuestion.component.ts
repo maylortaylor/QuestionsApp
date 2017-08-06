@@ -1,6 +1,8 @@
 import { Component, OnInit } from "@angular/core";
-// import { NgForm } from "@angular/forms";
+import { NgForm } from "@angular/forms";
+
 import { Category } from "../../models/category.model";
+import { CategoryType } from "../../models/enums/categoryType.enum";
 import { SubCategory } from "../../models/subCategory.model";
 import { Tag } from "../../models/tag.model";
 
@@ -11,6 +13,7 @@ import { LoggingService } from "../../shared/logging/logging.service";
 import { GuidService } from "../../shared/guid/guid.service";
 import { AngularFireDBService } from "../../shared/angular-fire/angular-fire-db.service";
 import { ToastService } from "../../shared/toasts/toast.service";
+import { MultiInputLabelDeterminerService } from "./services/MultiInputLabelDeterminer.service";
 
 import * as _ from "lodash";
 declare var jquery: any;
@@ -25,12 +28,18 @@ export class SubmitQuestionComponent implements OnInit {
 	categories: Array<Category> = new Array<Category>();
 	subCategories: Array<SubCategory> = new Array<SubCategory>();
 	tags: Array<Tag> = new Array<Tag>();
-	questionInputs: Array<string> = new Array<string>();
+	questionItems: Array<string> = new Array<string>();
 
 	question: Question = new Question(this.guid.newGuid(), false);
 	showSubCategory: boolean = false;
 
-	constructor(private guid: GuidService, private afdb: AngularFireDBService, private logger: LoggingService, private toast: ToastService) {}
+	constructor(
+		private guid: GuidService,
+		private afdb: AngularFireDBService,
+		private logger: LoggingService,
+		private toast: ToastService,
+		private labelService: MultiInputLabelDeterminerService
+	) {}
 
 	routerOnActivate() {}
 	ngOnInit() {
@@ -42,7 +51,7 @@ export class SubmitQuestionComponent implements OnInit {
 		this.getSubCategories();
 		this.getTags();
 	}
-	hasCategory() {
+	public hasCategory() {
 		var hasCategory: boolean = false;
 		if (!!this.question.category) {
 			if (!!this.question.category.id) {
@@ -51,26 +60,43 @@ export class SubmitQuestionComponent implements OnInit {
 		}
 		return false;
 	}
-	onCategoryChange() {
+	onCategoryChange(submitQuestionForm: NgForm) {
 		this.determineShowSubCategory();
 	}
-	determineShowSubCategory() {
+	private determineShowSubCategory() {
 		if (!!this.question.category) {
 			var cat: Category = _.first(_.filter(this.categories, this.question.category));
-			this.showSubCategory = !!cat.isMultipleChoice;
+			this.showSubCategory = !!cat.hasSubCategories;
 		}
 	}
-	customTrackBy(index: number, obj: any): any {
+	public indexTrackBy(index: number, obj: any): any {
 		return index;
 	}
-	determineNumberOfInputFields() {
+	public determineNumberOfInputFields() {
 		if (!!this.question.category) {
 			var cat: Category = _.first(_.filter(this.categories, this.question.category));
 			if (cat.numberOfChoices > 1) {
-				this.questionInputs = new Array<string>(cat.numberOfChoices);
+				this.questionItems = new Array<string>(cat.numberOfChoices);
 				return cat.numberOfChoices;
 			}
 			return cat.numberOfChoices;
+		}
+	}
+	public determindQuestionItemLabel(category: Category, index: number) {
+		switch (category.type) {
+			case CategoryType.FuckMaryKill:
+				return this.labelService.determineFuckMaryKill(category, index);
+			case CategoryType.Pick3:
+				return this.labelService.determinePickTop3(category, index);
+			case CategoryType.Pick5:
+				return this.labelService.determinePickTop5(category, index);
+		}
+	}
+	public hasMaxNumberOfChoices() {
+		if (!!this.question.category) {
+			return this.question.category.numberOfChoices == Number.MAX_VALUE ? true : false;
+		} else {
+			return false;
 		}
 	}
 	private async getCategories() {
@@ -128,13 +154,38 @@ export class SubmitQuestionComponent implements OnInit {
 	}
 
 	public isValidForm() {
-		if (!!this.question.questionText && this.question.questionText.length > 10) {
-			return true;
+		if (this.determineNumberOfInputFields() > 1) {
+			switch (this.question.questionItems.length) {
+				case 3:
+					if (!!this.question.questionItems[0] && !!this.question.questionItems[1] && !!this.question.questionItems[2]) {
+						return true;
+					} else {
+						return false;
+					}
+				case 5:
+					if (
+						!!this.question.questionItems[0] &&
+						!!this.question.questionItems[1] &&
+						!!this.question.questionItems[2] &&
+						!!this.question.questionItems[3] &&
+						!!this.question.questionItems[4]
+					) {
+						return true;
+					} else {
+						return false;
+					}
+			}
 		} else {
-			return false;
+			if (!!this.question.questionText && this.question.questionText.length > 10) {
+				return true;
+			} else {
+				return false;
+			}
 		}
 	}
-	public submitQuestion() {
+	public submitQuestion(submitQuestionForm: NgForm) {
+		this.logger.log("FORM", submitQuestionForm);
+
 		if (!this.question.questionText) {
 			this.logger.log("No Question Text was provided", this.question);
 		}

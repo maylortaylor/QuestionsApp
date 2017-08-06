@@ -14,13 +14,24 @@ import * as moment from "moment";
 @Injectable()
 export class AngularFireDbSeeder {
 	private categoriesForSeed: Array<Category> = [
-		new Category(this.guid.newGuid(), true, "Would You Rather", null, Status.Platform, CategoryType.WouldYouRather, false, true),
-		new Category(this.guid.newGuid(), true, "Fuck Mary Kill", null, Status.Platform, CategoryType.FuckMaryKill, false, true, 3),
-		new Category(this.guid.newGuid(), true, "Pick Favorite", null, Status.Platform, CategoryType.PickFavorite, true, true, 1),
-		new Category(this.guid.newGuid(), true, "Pick Top 3", null, Status.Platform, CategoryType.Pick3, true, true, 3),
-		new Category(this.guid.newGuid(), true, "Pick Top 5", null, Status.Platform, CategoryType.Pick5, true, true, 5),
-		new Category(this.guid.newGuid(), true, "Devil's Advocate", null, Status.Platform, CategoryType.DevilsAdvocate, false, false),
-		new Category(this.guid.newGuid(), true, "Open Ended...", null, Status.Platform, CategoryType.OpenEnded, false, false)
+		new Category(
+			this.guid.newGuid(),
+			true,
+			"Would You Rather",
+			null,
+			Status.Platform,
+			CategoryType.WouldYouRather,
+			false,
+			true,
+			Number.MAX_VALUE,
+			true
+		),
+		new Category(this.guid.newGuid(), true, "Fuck Mary Kill", null, Status.Platform, CategoryType.FuckMaryKill, false, true, 3, true),
+		new Category(this.guid.newGuid(), true, "Pick Favorite", null, Status.Platform, CategoryType.PickFavorite, true, true, 1, true),
+		new Category(this.guid.newGuid(), true, "Pick Top 3", null, Status.Platform, CategoryType.Pick3, true, true, 3, true),
+		new Category(this.guid.newGuid(), true, "Pick Top 5", null, Status.Platform, CategoryType.Pick5, true, true, 5, true),
+		new Category(this.guid.newGuid(), true, "Devil's Advocate", null, Status.Platform, CategoryType.DevilsAdvocate, false, false, 1, true),
+		new Category(this.guid.newGuid(), true, "Open Ended...", null, Status.Platform, CategoryType.OpenEnded, false, false, 1, true)
 	];
 	private subCategoriesForSeed: Array<SubCategory> = [
 		new SubCategory(this.guid.newGuid(), true, "Real", null, Status.Platform),

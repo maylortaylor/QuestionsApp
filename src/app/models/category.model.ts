@@ -13,6 +13,7 @@ export class Category extends BaseSettings {
 	status: Status;
 	type: CategoryType;
 	numberOfChoices: number;
+	hasSubCategories: boolean;
 	/**
      *
      */
@@ -25,7 +26,8 @@ export class Category extends BaseSettings {
 		type: CategoryType,
 		hasOptions: boolean,
 		isMultipleChoice: boolean,
-		numberOfChoices: number = 1
+		numberOfChoices: number = 1,
+		hasSubCategories: boolean = false
 	) {
 		super();
 
@@ -38,6 +40,7 @@ export class Category extends BaseSettings {
 		this.hasOptions = hasOptions;
 		this.isMultipleChoice = isMultipleChoice;
 		this.numberOfChoices = !!this.isMultipleChoice ? numberOfChoices : 1;
+		this.hasSubCategories = hasSubCategories;
 
 		if (isPlatform) {
 			this.status = Status.Platform;

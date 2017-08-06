@@ -9,8 +9,11 @@ import { CommonModule } from "@angular/common";
 import { SubmitQuestionComponent } from "./submitQuestion/submitQuestion.component";
 import { QuestionListComponent } from "./questionList/questionList.component";
 
+import { MultiInputLabelDeterminerService } from "./submitQuestion/services/MultiInputLabelDeterminer.service";
+
 @NgModule({
 	imports: [CommonModule, BrowserModule, FormsModule, MaterializeModule, MomentModule],
-	declarations: [SubmitQuestionComponent, QuestionListComponent]
+	declarations: [SubmitQuestionComponent, QuestionListComponent],
+	providers: [MultiInputLabelDeterminerService]
 })
 export class ComponentsModule {}

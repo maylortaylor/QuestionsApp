@@ -15,7 +15,7 @@ export class Question {
 	questionText: string;
 	description: string;
 	dateCreated: string;
-	questionInputs: Array<string>;
+	questionItems: Array<string>;
 	tags: Array<Tag>;
 	status: Status;
 	/**
@@ -24,7 +24,7 @@ export class Question {
 	constructor(guid: string, isPlatform: boolean = false, questionText: string = null, description: string = null, status: Status = Status.Platform) {
 		this.id = guid;
 		this.tags = new Array<Tag>();
-		this.questionInputs = new Array<string>();
+		this.questionItems = new Array<string>();
 		this.dateCreated = moment.utc().format();
 		this.questionText = questionText;
 		this.description = description;
