@@ -1,25 +1,45 @@
-<!-- OVERVIEW
-<div class="row ">
-    <div class="card">
-        <div class="card-content">
-
-            Email: {{ userService.user.email }}
-        </div>
-    </div>
-    <img [hidden]="!userService.user.photoUrl " src="{{userService.user.photoUrl}} " alt=" ">
-
-</div> -->
-
 <div class="row">
 
-    <div class="col s12 m7">
+    <div class="col s12">
         <h2 class="header">Overview</h2>
+
         <div class="row">
-            <div class="input-field col s6">
-                <input [(ngModel)]="user.email" disabled placeholder="Placeholder" name="email" id="email" type="text" class="validate">
-                <label for="email" class="active">Email</label>
-            </div>
+
+            <!-- Favorited Questions -->
+            <ul class="collection with-header">
+                <li class="collection-header">
+                    <h4>Favorited Questions</h4>
+                </li>
+                <li class="collection-item">Question Title, Date Actioned, Tags</li>
+                <li class="collection-item">Question Title, Date Actioned, Tags</li>
+                <li class="collection-item">Question Title, Date Actioned, Tags</li>
+                <li class="collection-item">Question Title, Date Actioned, Tags</li>
+            </ul>
+
+            <!-- Submitted Questions -->
+            <ul class="collection with-header">
+                <li class="collection-header">
+                    <h4>Submitted Questions</h4>
+                </li>
+                <li class="collection-item">Question Title, Date Actioned, Tags</li>
+                <li class="collection-item">Question Title, Date Actioned, Tags</li>
+                <li class="collection-item">Question Title, Date Actioned, Tags</li>
+                <li class="collection-item">Question Title, Date Actioned, Tags</li>
+            </ul>
+
+            <!-- Upvoted Questions -->
+            <ul class="collection with-header">
+                <li class="collection-header">
+                    <h4>Upvoted Questions</h4>
+                </li>
+                <li class="collection-item">Question Title, Date Actioned, Tags</li>
+                <li class="collection-item">Question Title, Date Actioned, Tags</li>
+                <li class="collection-item">Question Title, Date Actioned, Tags</li>
+                <li class="collection-item">Question Title, Date Actioned, Tags</li>
+            </ul>
+
         </div>
+
     </div>
 
 </div>

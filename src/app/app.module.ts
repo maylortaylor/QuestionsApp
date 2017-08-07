@@ -35,7 +35,6 @@ var firebaseConfig = {
 		ReactiveFormsModule,
 		AppRouting,
 		HttpModule,
-
 		// ErrorHandlerModule,
 
 		AuthModule,

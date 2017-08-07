@@ -17,6 +17,7 @@ import * as Materialize from "angular2-materialize";
 })
 export class UserProfileEditComponent implements OnInit {
 	user: UserModel;
+	navbarColor: string;
 	constructor(private userService: UserService, private logger: LoggingService, private toast: ToastService) {}
 
 	ngOnInit() {
