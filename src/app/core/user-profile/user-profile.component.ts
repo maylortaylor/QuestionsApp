@@ -14,6 +14,8 @@ import { AngularFireDBService } from "../../shared/angular-fire/angular-fire-db.
 	styleUrls: ["./user-profile.component.less"]
 })
 export class UserProfileComponent implements OnInit {
+	user: UserModel;
+
 	constructor(
 		private router: Router,
 		private afdb: AngularFireDBService,
@@ -28,6 +30,7 @@ export class UserProfileComponent implements OnInit {
 
 	ngOnInit() {
 		// this.userService.user = this.userService.getCurrentUser();
-		this.logger.log("User Page User", this.userService.user);
+		this.user = this.userService.user;
+		this.logger.log("User Page UserModel: ", this.userService.user);
 	}
 }

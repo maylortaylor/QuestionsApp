@@ -1,5 +1,6 @@
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
+import { FormsModule } from "@angular/forms";
 
 import { UserProfileRouting } from "./user-profile/user-profile.routes";
 import { UserService } from "./user-service/user.service";
@@ -8,7 +9,7 @@ import { UserProfileEditComponent } from "./user-profile/edit/user-profile-edit.
 import { UserProfileOverviewComponent } from "./user-profile/overview/user-profile-overview.component";
 
 @NgModule({
-	imports: [CommonModule, UserProfileRouting],
+	imports: [CommonModule, UserProfileRouting, FormsModule],
 	declarations: [UserProfileComponent, UserProfileOverviewComponent, UserProfileEditComponent],
 	providers: [UserService]
 })
