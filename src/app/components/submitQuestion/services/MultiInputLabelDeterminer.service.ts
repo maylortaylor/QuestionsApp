@@ -7,7 +7,7 @@ export class MultiInputLabelDeterminerService {
 	public multipleInputFields(category: Category, index: number): string {
 		switch (category.type) {
 			case CategoryType.FuckMaryKill:
-				return this.determineFuckMaryKill(category, index);
+				return this.determinePickTop3(category, index);
 			case CategoryType.Pick3:
 				return this.determinePickTop3(category, index);
 			case CategoryType.Pick5:
@@ -28,6 +28,30 @@ export class MultiInputLabelDeterminerService {
 				return "Question";
 			case CategoryType.PickFavorite:
 				return "What is your favorite ..";
+			case CategoryType.FuckMaryKill:
+				return "You have three choices: Fuck, Marry, or Kill";
+			case CategoryType.WouldYouRather:
+				return "Would you rather ";
+			default:
+				return "Ouestion";
+		}
+	}
+	public getQuestionLabel(category: Category): string {
+		switch (category.type) {
+			case CategoryType.DevilsAdvocate:
+				return "Question";
+			case CategoryType.OpenEnded:
+				return "Question";
+			case CategoryType.PickFavorite:
+				return "What is your favorite..";
+			case CategoryType.Pick3:
+				return "What are your top 3..";
+			case CategoryType.Pick5:
+				return "What are your top 5..";
+			case CategoryType.FuckMaryKill:
+				return "You have three choices: Fuck, Marry, or Kill";
+			case CategoryType.WouldYouRather:
+				return "Would you rather ";
 			default:
 				return "Ouestion";
 		}

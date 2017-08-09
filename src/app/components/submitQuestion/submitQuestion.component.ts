@@ -69,6 +69,13 @@ export class SubmitQuestionComponent implements OnInit {
 		this.getTags();
 	}
 	onCategoryChange(submitQuestionForm: NgForm) {
+		switch (this.question.category.type) {
+			case CategoryType.PickFavorite:
+				this.question.questionText = "What is your favorite ";
+				break;
+			default:
+				break;
+		}
 		this.determineShowSubCategory();
 	}
 	public indexTrackBy(index: number, obj: any): any {
@@ -102,6 +109,9 @@ export class SubmitQuestionComponent implements OnInit {
 		} else {
 			return this.labelService.singleInputField(category, index);
 		}
+	}
+	public determineQuestionLabel(category: Category) {
+		return this.labelService.getQuestionLabel(category);
 	}
 	public hasMaxNumberOfChoices() {
 		if (!!this.question.category) {

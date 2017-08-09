@@ -5,6 +5,7 @@
 
                 <!-- DEBUG -->
                 <div>{{question | json}}</div>
+                <div class="divider"></div>
 
                 <!-- Categories  -->
                 <div *ngIf="!!categories.length" class="input-field col s12">
@@ -27,6 +28,8 @@
 
                 <!-- Would You Rather -->
                 <div *ngIf="hasMaxNumberOfChoices()">
+                    <div class="flow-text">{{determineQuestionLabel(question.category)}}</div>
+
                     <div class="input-field col s6">
                         <input [(ngModel)]="question.questionItems[0]" minlength="minLengthOfMultiInputs" name="questionText" placeholder="" id="question"
                             type="text" class="validate">
@@ -45,7 +48,7 @@
                     <!-- Single Input Field -->
                     <div *ngSwitchCase="1">
                         <div class="input-field col s12">
-                            <input [(ngModel)]="question.questionText" name="questionText" placeholder="" id="question" type="text" class="validate">
+                            <input [(ngModel)]="question.questionText" name="questionText" placeholder="" id="question" type="text" class="validate active">
                             <label for="question">{{determindQuestionItemLabel(question.category, 0)}}</label>
                         </div>
                     </div>
@@ -54,6 +57,7 @@
                     <div *ngSwitchCase="3">
 
                         <div class="row">
+                            <div class="flow-text">{{determineQuestionLabel(question.category)}}</div>
                             <div class="input-field col s4" *ngFor="let item of questionItems;let i=index; trackBy: indexTrackBy">
                                 <input [value]="question.questionItems[i]" minlength="minLengthOfMultiInputs" [(ngModel)]="question.questionItems[i]" id="questionInput{{i}}"
                                     name="questionInput{{i}}" placeholder="" type="text" class="validate">
@@ -64,7 +68,7 @@
                     </div>
 
                     <!-- Switch 5 -->
-                    <div *ngSwitchCase="5">
+                    <!-- <div *ngSwitchCase="5">
 
                         <div class="row">
                             <div class="input-field col s2" *ngFor="let item of questionItems;let i=index; trackBy: indexTrackBy">
@@ -74,7 +78,7 @@
                             </div>
                         </div>
 
-                    </div>
+                    </div> -->
                 </div>
 
                 <!-- Tags -->
