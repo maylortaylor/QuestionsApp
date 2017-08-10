@@ -36,7 +36,7 @@
     </div>
 </div>
 <div [hidden]="!questions" class="row">
-    <div *ngFor="let question of questions">
+    <div *ngFor="let question of (questions | searchFilter: woo)">
         <div class="col s12 m6">
 
             <div class="card z-depth-3">

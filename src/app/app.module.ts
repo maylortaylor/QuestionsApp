@@ -19,6 +19,9 @@ import { Ng4DropdownModule } from "ng4-material-dropdown";
 import { AppComponent } from "./app.component";
 import { NavigationComponent } from "./navigation/navigation.component";
 
+import { SearchFilterPipe } from "./shared/filters/search-filter.pipe";
+import { FilterModule } from "./shared/filters/filter.module";
+
 var firebaseConfig = {
 	apiKey: "AIzaSyCs8DfHQqmXIhyHbwRVPEDIL75brdoDgbk",
 	authDomain: "no-right-answer.firebaseapp.com",
@@ -37,6 +40,7 @@ var firebaseConfig = {
 		HttpModule,
 		// ErrorHandlerModule,
 
+		// FilterModule.forRoot(),
 		AuthModule,
 		CoreModule,
 		SharedModule,

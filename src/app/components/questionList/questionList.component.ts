@@ -11,6 +11,8 @@ import { AngularFireDBService } from "../../shared/angular-fire/angular-fire-db.
 import { ToastService } from "../../shared/toasts/toast.service";
 import { SearchService } from "../../shared/filters/search.service";
 
+// import { SearchFilterPipe } from "../../shared/filters/search-filter.pipe";
+
 import * as _ from "lodash";
 declare var jquery: any;
 
@@ -26,7 +28,12 @@ export class QuestionListComponent implements OnInit {
 	tagsForFilter: Array<Tag> = new Array<Tag>();
 	categoriesForFilter: Array<Category> = new Array<Category>();
 	subCategoriesForFilter: Array<SubCategory> = new Array<SubCategory>();
-	constructor(private ss: SearchService, private afdb: AngularFireDBService, private logger: LoggingService, private toast: ToastService) {
+	constructor(
+		private ss: SearchService,
+		private afdb: AngularFireDBService,
+		private logger: LoggingService,
+		private toast: ToastService
+	) {
 		this.getQuestions();
 	}
 

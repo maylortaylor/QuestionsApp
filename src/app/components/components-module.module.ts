@@ -15,9 +15,16 @@ import { MultiInputLabelDeterminerService } from "./submitQuestion/services/Mult
 import { SubmitQuestionFormValidatorService } from "./submitQuestion/services/SubmitQuestionFormValidator.service";
 import { NumberOfInputFieldDeterminerService } from "./submitQuestion/services/NumberOfInputFieldDeterminer.service";
 
+import { FilterModule } from "../shared/filters/filter.module";
+
 @NgModule({
-	imports: [CommonModule, BrowserModule, FormsModule, MaterializeModule, MomentModule],
+	imports: [FilterModule, CommonModule, BrowserModule, FormsModule, MaterializeModule, MomentModule],
 	declarations: [SubmitQuestionComponent, QuestionListComponent],
-	providers: [FormBuilder, MultiInputLabelDeterminerService, SubmitQuestionFormValidatorService, NumberOfInputFieldDeterminerService]
+	providers: [
+		FormBuilder,
+		MultiInputLabelDeterminerService,
+		SubmitQuestionFormValidatorService,
+		NumberOfInputFieldDeterminerService
+	]
 })
 export class ComponentsModule {}
