@@ -32,7 +32,7 @@ export class AuthService {
 	public isAuthenticated(): boolean {
 		this.isLoggedIn = !!this.afAuth.auth.currentUser ? true : false;
 		if (!!this.isLoggedIn) {
-			this.logger.log("is logged in", this.isLoggedIn);
+			// this.logger.log("is logged in", this.isLoggedIn);
 			this.userService.setUser(this.afAuth.auth.currentUser);
 		}
 		return this.isLoggedIn;

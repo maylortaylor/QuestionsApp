@@ -28,6 +28,13 @@ export class QuestionListComponent implements OnInit {
 	tagsForFilter: Array<Tag> = new Array<Tag>();
 	categoriesForFilter: Array<Category> = new Array<Category>();
 	subCategoriesForFilter: Array<SubCategory> = new Array<SubCategory>();
+
+	filteredTags: any = new Array<any>();
+	tagFilteringArray: any = new Array<any>();
+
+	filteredCategories: any = new Array<any>();
+	categoryFilteringArray: any = new Array<any>();
+
 	constructor(
 		private ss: SearchService,
 		private afdb: AngularFireDBService,
@@ -54,9 +61,31 @@ export class QuestionListComponent implements OnInit {
 	}
 	public setTagFilter(tag: Tag) {
 		this.logger.log("Filtering Tag: ", tag.title);
+
+		var index = this.filteredTags.indexOf(tag.id);
+		if (index > -1) {
+			this.filteredTags.splice(index, 1);
+		} else {
+			this.filteredTags.push(tag.id);
+		}
+
+		this.tagFilteringArray = this.filteredTags.length > 0 ? this.filteredTags : new Array<any>();
+
+		this.logger.log("tag filtering", this.tagFilteringArray);
 	}
 	public setCategoryFilter(cat: Category) {
 		this.logger.log("Filtering Category: ", cat.title);
+
+		var index = this.filteredCategories.indexOf(cat.id);
+		if (index > -1) {
+			this.filteredCategories.splice(index, 1);
+		} else {
+			this.filteredCategories.push(cat.id);
+		}
+
+		this.categoryFilteringArray = this.filteredCategories.length > 0 ? this.filteredCategories : new Array<any>();
+
+		this.logger.log("cat filtering", this.categoryFilteringArray);
 	}
 
 	private populateFilters(questions: Array<Question>) {

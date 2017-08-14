@@ -12,7 +12,12 @@ export class UserService {
 	user: UserModel = null;
 	userIsLoggedIn: boolean = false;
 
-	constructor(private afAuth: AngularFireAuth, private af: AngularFireDatabase, private logger: LoggingService, private toast: ToastService) {
+	constructor(
+		private afAuth: AngularFireAuth,
+		private af: AngularFireDatabase,
+		private logger: LoggingService,
+		private toast: ToastService
+	) {
 		//this.checkLoginStatus();
 		this.setUser(this.afAuth.auth.currentUser);
 	}
@@ -32,7 +37,7 @@ export class UserService {
 			this.user.photoUrl = user.photoUrl;
 			this.user.refreshToken = user.refreshToken;
 
-			this.logger.log("LOGGED IN USER", this.user);
+			// this.logger.log("LOGGED IN USER", this.user);
 		} else {
 			// No user is signed in.
 			this.logger.log("not logged in");

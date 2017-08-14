@@ -36,7 +36,10 @@
     </div>
 </div>
 <div [hidden]="!questions" class="row">
-    <div *ngFor="let question of (questions | searchFilter: woo)">
+    <div *ngFor="let question of (questions
+                    | searchFilter: 'title,questionText': searchText
+                    | collectionFilter: 'tags': 'id': tagFilteringArray
+                    | collectionFilter: 'cateogory': 'id': categoryFilteringArray)">
         <div class="col s12 m6">
 
             <div class="card z-depth-3">
