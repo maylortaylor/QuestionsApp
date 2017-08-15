@@ -11,8 +11,6 @@ import { AngularFireDBService } from "../../shared/angular-fire/angular-fire-db.
 import { ToastService } from "../../shared/toasts/toast.service";
 import { SearchService } from "../../shared/filters/search.service";
 
-// import { SearchFilterPipe } from "../../shared/filters/search-filter.pipe";
-
 import * as _ from "lodash";
 declare var jquery: any;
 
@@ -29,11 +27,15 @@ export class QuestionListComponent implements OnInit {
 	categoriesForFilter: Array<Category> = new Array<Category>();
 	subCategoriesForFilter: Array<SubCategory> = new Array<SubCategory>();
 
+	// TAGS Filter
 	filteredTags: any = new Array<any>();
 	tagFilteringArray: any = new Array<any>();
-
+	// CATEGORIES Filter
 	filteredCategories: any = new Array<any>();
 	categoryFilteringArray: any = new Array<any>();
+	// SUBCATEGORIES Filter
+	filteredSubCategories: any = new Array<any>();
+	subCategoryFilteringArray: any = new Array<any>();
 
 	constructor(
 		private ss: SearchService,
@@ -58,6 +60,27 @@ export class QuestionListComponent implements OnInit {
 		});
 
 		this.logger.log("Questions", this.questions);
+	}
+	public setButtonColor(array: any[]): string {
+		if (!!array.length) {
+			return 'purple accent-3';
+		}
+		return null;
+	}
+	public hideCheckmarkOnButton(array: any[]): boolean {
+		if (!!array.length) {
+			return false;
+		}
+		return true;
+	}
+	public hideCheckmark(array: any[], item: any): boolean {
+		if (!!array.length) {
+			if (array.indexOf(item.id) > -1) {
+				return false;
+			}
+			return true;
+		}
+		return true;
 	}
 	public setTagFilter(tag: Tag) {
 		this.logger.log("Filtering Tag: ", tag.title);
@@ -86,6 +109,20 @@ export class QuestionListComponent implements OnInit {
 		this.categoryFilteringArray = this.filteredCategories.length > 0 ? this.filteredCategories : new Array<any>();
 
 		this.logger.log("cat filtering", this.categoryFilteringArray);
+	}
+	public setSubCategoryFilter(subCat: SubCategory) {
+		this.logger.log("Filtering Sub Category: ", subCat.title);
+
+		var index = this.filteredSubCategories.indexOf(subCat.id);
+		if (index > -1) {
+			this.filteredSubCategories.splice(index, 1);
+		} else {
+			this.filteredSubCategories.push(subCat.id);
+		}
+
+		this.subCategoryFilteringArray = this.filteredSubCategories.length > 0 ? this.filteredSubCategories : new Array<any>();
+
+		this.logger.log("subCat filtering", this.subCategoryFilteringArray);
 	}
 
 	private populateFilters(questions: Array<Question>) {

@@ -3,18 +3,18 @@ import { Pipe, PipeTransform } from "@angular/core";
 import * as _ from "lodash";
 
 @Pipe({
-	name: "collectionFilter",
+	name: "itemFilter",
 	pure: true
 })
-export class CollectionFilterPipe implements PipeTransform {
+export class ItemFilterPipe implements PipeTransform {
 	// Example: | tagFilter:'tags': tagFilteringArray)
 	// items == ngFor array list
 	// property == property of object to deep-search into
 	// array == array of filtered items on component
-	transform(items: any[], property: any, subProperty: any, array: any[]): any {
-		var filteredItems = [];
+	transform(items: any[], property: any, array: any[]): any {
+        var filteredItems = [];
 
-		if (!items.length) {
+        if (!items.length) {
 			return items;
 		}
 
@@ -27,14 +27,17 @@ export class CollectionFilterPipe implements PipeTransform {
 				}
 
 				for (var s in item[property]) {
-					if (array.indexOf(item[property][s][subProperty]) !== -1) {
-						if (filteredItems.indexOf(item) === -1) {
-							filteredItems.push(item);
-						}
-					}
-				}
+                    if (!!item[property][s]) {
+                        if (array.indexOf(item[property][s]) !== -1) {
+                            if (filteredItems.indexOf(item) === -1) {
+                                filteredItems.push(item);
+                            }
+                        }
+                    }
+                }
+
 			}
-		}
+        }
 
 		return filteredItems;
 	}
