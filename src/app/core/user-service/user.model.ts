@@ -1,3 +1,5 @@
+import { UserStylingModel } from "./userStyling.model";
+
 export class UserModel {
 	email: string;
 	password: string;
@@ -7,14 +9,16 @@ export class UserModel {
 	submittedQuestions: Array<string>;
 	upvotedQuestions: Array<string>;
 
+	styling: UserStylingModel;
+
 	// Google Auth Variables
 	uid: string;
 	emailVerified: boolean;
 	displayName: string;
 	photoUrl: string;
 	refreshToken: string;
-	/**
-	 *
-	 */
-	constructor() {}
+
+	constructor() {
+		this.styling = new UserStylingModel();
+	}
 }

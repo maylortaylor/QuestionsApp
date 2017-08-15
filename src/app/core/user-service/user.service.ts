@@ -37,6 +37,10 @@ export class UserService {
 			this.user.photoUrl = user.photoUrl;
 			this.user.refreshToken = user.refreshToken;
 
+			this.user.styling.primaryColor = "#4a148c";
+			this.user.styling.secondaryColor = "#009688";
+			this.user.styling.accentColor = "#d500f9";
+
 			// this.logger.log("LOGGED IN USER", this.user);
 		} else {
 			// No user is signed in.
