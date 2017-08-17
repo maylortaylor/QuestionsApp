@@ -15,49 +15,67 @@
             <label for="searchText">Search Question</label>
         </div>
 
-        <!-- Tag Dropdown -->
-        <a [hidden]="!tagsForFilter.length" [ngClass]="setButtonColor(tagFilteringArray)" class='dropdown-button btn' href='#' data-activates='tagFilterDropdown'>
-            <span>Tag Filter</span>
-            <span [hidden]="hideCheckmarkOnButton(tagFilteringArray)"><i class="material-icons right">check</i></span>
-        </a>
-        <ul id='tagFilterDropdown' class='dropdown-content'>
-            <li *ngFor="let tag of tagsForFilter">
-                <a href="#!" (click)="setTagFilter(tag)">
-                    <span>{{tag.title}}</span>
-                    <span [hidden]="hideCheckmark(tagFilteringArray, tag)"><i class="material-icons right">check</i></span>
-                </a>
-            </li>
-        </ul>
+        <div class="row">
+            <div class="col">
 
-        <!-- Category Dropdown -->
-        <a [hidden]="!categoriesForFilter.length" [ngClass]="setButtonColor(categoryFilteringArray)" class='dropdown-button btn'
-            href='#' data-activates='categoryFilterDropdown'>
-            <span>Category Filter</span>
-            <span [hidden]="hideCheckmarkOnButton(categoryFilteringArray)"><i class="material-icons right">check</i></span>
-        </a>
-        <ul id='categoryFilterDropdown' class='dropdown-content'>
-            <li *ngFor="let cat of categoriesForFilter">
-                <a href="#!" (click)="setCategoryFilter(cat)">
-                    <span>{{cat.title}}</span>
-                    <span [hidden]="hideCheckmark(categoryFilteringArray, cat)"><i class="material-icons right">check</i></span>
-                </a>
-            </li>
-        </ul>
+                <!-- Tag Dropdown -->
+                <a [hidden]="!tagsForFilter.length" [ngClass]="setButtonColor(tagFilteringArray)" class='dropdown-button btn' href='#' data-activates='tagFilterDropdown'>
+                <span>Tag Filter</span>
+                <span [hidden]="hideCheckmarkOnButton(tagFilteringArray)"><i class="material-icons right">check</i></span>
+            </a>
+                <ul id='tagFilterDropdown' class='dropdown-content'>
+                    <li *ngFor="let tag of tagsForFilter">
+                        <a href="#!" (click)="setTagFilter(tag)">
+                        <span>{{tag.title}}</span>
+                        <span [hidden]="hideCheckmark(tagFilteringArray, tag)"><i class="material-icons right">check</i></span>
+                    </a>
+                    </li>
+                </ul>
+            </div>
 
-        <!-- Sub Category Dropdown -->
-        <a [hidden]="!subCategoriesForFilter.length" [ngClass]="setButtonColor(subCategoryFilteringArray)" class='dropdown-button btn'
-            href='#' data-activates='subCategoryFilterDropdown'>
-            <span>Sub Category Filter</span>
-            <span [hidden]="hideCheckmarkOnButton(subCategoryFilteringArray)"><i class="material-icons right">check</i></span>
-        </a>
-        <ul id='subCategoryFilterDropdown' class='dropdown-content'>
-            <li *ngFor="let subCat of subCategoriesForFilter">
-                <a href="#!" (click)="setSubCategoryFilter(subCat)">
-                    <span>{{subCat.title}}</span>
-                    <span [hidden]="hideCheckmark(subCategoryFilteringArray, subCat)"><i class="material-icons right">check</i></span>
-                </a>
-            </li>
-        </ul>
+            <div class="col">
+
+                <!-- Category Dropdown -->
+                <a [hidden]="!categoriesForFilter.length" [ngClass]="setButtonColor(categoryFilteringArray)" class='dropdown-button btn'
+                    href='#' data-activates='categoryFilterDropdown'>
+                <span>Category Filter</span>
+                <span [hidden]="hideCheckmarkOnButton(categoryFilteringArray)"><i class="material-icons right">check</i></span>
+            </a>
+                <ul id='categoryFilterDropdown' class='dropdown-content'>
+                    <li *ngFor="let cat of categoriesForFilter">
+                        <a href="#!" (click)="setCategoryFilter(cat)">
+                        <span>{{cat.title}}</span>
+                        <span [hidden]="hideCheckmark(categoryFilteringArray, cat)"><i class="material-icons right">check</i></span>
+                    </a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="col">
+
+                <!-- Sub Category Dropdown -->
+                <a [hidden]="!subCategoriesForFilter.length" [ngClass]="setButtonColor(subCategoryFilteringArray)" class='dropdown-button btn'
+                    href='#' data-activates='subCategoryFilterDropdown'>
+                <span>Sub Category Filter</span>
+                <span [hidden]="hideCheckmarkOnButton(subCategoryFilteringArray)"><i class="material-icons right">check</i></span>
+            </a>
+                <ul id='subCategoryFilterDropdown' class='dropdown-content'>
+                    <li *ngFor="let subCat of subCategoriesForFilter">
+                        <a href="#!" (click)="setSubCategoryFilter(subCat)">
+                        <span>{{subCat.title}}</span>
+                        <span [hidden]="hideCheckmark(subCategoryFilteringArray, subCat)"><i class="material-icons right">check</i></span>
+                    </a>
+                    </li>
+                </ul>
+            </div>
+
+            <div *ngIf="showClearFilterButton()" class="col">
+
+                <button class="btn waves-effect waves-light" name="clear" (click)="clearFilters()">Clear
+                                <i class="material-icons right">clear</i>
+                </button>
+            </div>
+        </div>
 
     </div>
 </div>

@@ -66,18 +66,21 @@ export class QuestionListComponent implements OnInit {
 		this.logger.log("Questions", this.questions);
 	}
 	public setButtonColor(array: any[]): string {
-		if (!!array.length) {
-			return "purple accent-3";
+		if (!array || !array.length) {
+			return null;
 		}
-		return null;
+		return "purple accent-3";
 	}
 	public hideCheckmarkOnButton(array: any[]): boolean {
-		if (!!array.length) {
-			return false;
+		if (!array || !array.length) {
+			return true;
 		}
-		return true;
+		return false;
 	}
 	public hideCheckmark(array: any[], item: any): boolean {
+		if (!array) {
+			return true;
+		}
 		if (!!array.length) {
 			if (array.indexOf(item.id) > -1) {
 				return false;
@@ -87,16 +90,31 @@ export class QuestionListComponent implements OnInit {
 		return true;
 	}
 
-	upVote(question: Question) {
+	public upVote(question: Question) {
 		this.votingService.upVote(question);
 	}
-	downVote(question: Question) {
+	public downVote(question: Question) {
 		this.votingService.downVote(question);
 	}
 
 	//
 	// Filters
 	//
+	public showClearFilterButton() {
+		if (
+			(!!this.tagFilteringArray && !!this.tagFilteringArray.length) ||
+			(!!this.categoryFilteringArray && !!this.categoryFilteringArray.length) ||
+			(!!this.subCategoryFilteringArray && !!this.subCategoryFilteringArray.length)
+		) {
+			return true;
+		}
+		return false;
+	}
+	public clearFilters() {
+		this.tagFilteringArray = null;
+		this.categoryFilteringArray = null;
+		this.subCategoryFilteringArray = null;
+	}
 	public setTagFilter(tag: Tag) {
 		this.logger.log("Filtering Tag: ", tag.title);
 

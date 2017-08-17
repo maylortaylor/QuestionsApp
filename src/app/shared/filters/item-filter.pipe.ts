@@ -12,9 +12,9 @@ export class ItemFilterPipe implements PipeTransform {
 	// property == property of object to deep-search into
 	// array == array of filtered items on component
 	transform(items: any[], property: any, array: any[]): any {
-        var filteredItems = [];
+		var filteredItems = [];
 
-        if (!items.length) {
+		if (!array || !items.length) {
 			return items;
 		}
 
@@ -27,19 +27,17 @@ export class ItemFilterPipe implements PipeTransform {
 				}
 
 				for (var s in item[property]) {
-                    if (!!item[property][s]) {
-                        if (array.indexOf(item[property][s]) !== -1) {
-                            if (filteredItems.indexOf(item) === -1) {
-                                filteredItems.push(item);
-                            }
-                        }
-                    }
-                }
-
+					if (!!item[property][s]) {
+						if (array.indexOf(item[property][s]) !== -1) {
+							if (filteredItems.indexOf(item) === -1) {
+								filteredItems.push(item);
+							}
+						}
+					}
+				}
 			}
-        }
+		}
 
 		return filteredItems;
 	}
-
 }

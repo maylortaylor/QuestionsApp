@@ -14,7 +14,7 @@ export class CollectionFilterPipe implements PipeTransform {
 	transform(items: any[], property: any, subProperty: any, array: any[]): any {
 		var filteredItems = [];
 
-		if (!items.length) {
+		if (!array || !items.length) {
 			return items;
 		}
 
@@ -38,5 +38,4 @@ export class CollectionFilterPipe implements PipeTransform {
 
 		return filteredItems;
 	}
-
 }
