@@ -11,7 +11,7 @@ import { CommonModule } from "@angular/common";
 import { SubmitQuestionComponent } from "./submitQuestion/submitQuestion.component";
 import { QuestionListComponent } from "./questionList/questionList.component";
 
-import { MultiInputLabelDeterminerService } from "./submitQuestion/services/MultiInputLabelDeterminer.service";
+import { QuestionLabelDeterminerService } from "./submitQuestion/services/QuestionLabelDeterminer.service";
 import { SubmitQuestionFormValidatorService } from "./submitQuestion/services/SubmitQuestionFormValidator.service";
 import { NumberOfInputFieldDeterminerService } from "./submitQuestion/services/NumberOfInputFieldDeterminer.service";
 
@@ -23,7 +23,7 @@ import { SearchFilterPipe } from "../shared/filters/search-filter.pipe";
 	declarations: [SubmitQuestionComponent, QuestionListComponent],
 	providers: [
 		FormBuilder,
-		MultiInputLabelDeterminerService,
+		QuestionLabelDeterminerService,
 		SubmitQuestionFormValidatorService,
 		NumberOfInputFieldDeterminerService
 	]

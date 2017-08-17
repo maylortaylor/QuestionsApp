@@ -1,7 +1,7 @@
 export enum CategoryType {
 	Undefined = 0,
 	WouldYouRather,
-	FuckMaryKill,
+	FuckMarryKill,
 	PickFavorite,
 	Pick3,
 	Pick5,

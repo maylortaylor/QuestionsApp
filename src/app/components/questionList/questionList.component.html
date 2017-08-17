@@ -30,7 +30,8 @@
         </ul>
 
         <!-- Category Dropdown -->
-        <a [hidden]="!categoriesForFilter.length" [ngClass]="setButtonColor(categoryFilteringArray)" class='dropdown-button btn' href='#' data-activates='categoryFilterDropdown'>
+        <a [hidden]="!categoriesForFilter.length" [ngClass]="setButtonColor(categoryFilteringArray)" class='dropdown-button btn'
+            href='#' data-activates='categoryFilterDropdown'>
             <span>Category Filter</span>
             <span [hidden]="hideCheckmarkOnButton(categoryFilteringArray)"><i class="material-icons right">check</i></span>
         </a>
@@ -44,7 +45,8 @@
         </ul>
 
         <!-- Sub Category Dropdown -->
-        <a [hidden]="!subCategoriesForFilter.length" [ngClass]="setButtonColor(subCategoryFilteringArray)" class='dropdown-button btn' href='#' data-activates='subCategoryFilterDropdown'>
+        <a [hidden]="!subCategoriesForFilter.length" [ngClass]="setButtonColor(subCategoryFilteringArray)" class='dropdown-button btn'
+            href='#' data-activates='subCategoryFilterDropdown'>
             <span>Sub Category Filter</span>
             <span [hidden]="hideCheckmarkOnButton(subCategoryFilteringArray)"><i class="material-icons right">check</i></span>
         </a>
@@ -59,6 +61,9 @@
 
     </div>
 </div>
+<!-- end of row (Search Area) -->
+
+<!-- Question Area -->
 <div [hidden]="!questions" class="row">
     <div *ngFor="let question of (questions
                     | searchFilter: 'title,questionText': searchText
@@ -68,7 +73,7 @@
         <div class="col s12 m6">
 
             <div class="card z-depth-3">
-                <div class="card-content">
+                <div [ngSwitch]="question.type" class="card-content">
                     <span class="card-title">{{ question.questionText }}</span>
                     <div *ngIf="!!question.category.title" class="card-padding category-area flow-text">
                         <span>{{question.category.title}}</span><span *ngIf="!!question.subCategory"> / {{question.subCategory.title}}</span>
@@ -80,13 +85,17 @@
                         </div>
                     </div>
                 </div>
+
+
                 <div class="card-action">
                     <a href="# ">Upvote</a>
                     <a href="# ">Downvote</a>
-                    <span class="submitted-date ">Submitted: {{ question.dateCreated | amDateFormat:'MMMM Do YYYY, h:mm:ss a' }}</span>
+                    <span class="submitted-date">Submitted: {{ question.dateCreated | amDateFormat:'MMMM Do YYYY, h:mm:ss a' }}</span>
                 </div>
 
             </div>
+
         </div>
     </div>
 </div>
+<!-- end of row (Question Area) -->

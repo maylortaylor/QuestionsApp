@@ -2,16 +2,16 @@ import { Injectable } from "@angular/core";
 import { Category } from "../../../models/category.model";
 import { CategoryType } from "../../../models/enums/categoryType.enum";
 @Injectable()
-export class MultiInputLabelDeterminerService {
+export class QuestionLabelDeterminerService {
 	constructor() {}
 	public multipleInputFields(category: Category, index: number): string {
 		switch (category.type) {
-			case CategoryType.FuckMaryKill:
-				return this.determinePickTop3(category, index);
+			case CategoryType.FuckMarryKill:
+				return "Fuck, Mary, or Kill";
 			case CategoryType.Pick3:
-				return this.determinePickTop3(category, index);
+				return "What are your top 3";
 			case CategoryType.Pick5:
-				return this.determinePickTop5(category, index);
+				return "What are your top 5";
 			case CategoryType.WouldYouRather:
 				if (index == 0) {
 					return "Do this...";
@@ -28,8 +28,10 @@ export class MultiInputLabelDeterminerService {
 				return "Question";
 			case CategoryType.PickFavorite:
 				return "What is your favorite ..";
-			case CategoryType.FuckMaryKill:
-				return "You have three choices: Fuck, Marry, or Kill";
+			case CategoryType.Pick3:
+				return "What are your top 3 ";
+			case CategoryType.FuckMarryKill:
+				return "Give three options for Fuck, Marry, or Kill";
 			case CategoryType.WouldYouRather:
 				return "Would you rather ";
 			default:
@@ -48,8 +50,8 @@ export class MultiInputLabelDeterminerService {
 				return "What are your top 3..";
 			case CategoryType.Pick5:
 				return "What are your top 5..";
-			case CategoryType.FuckMaryKill:
-				return "You have three choices: Fuck, Marry, or Kill";
+			case CategoryType.FuckMarryKill:
+				return "Give three choices for Fuck, Marry, or Kill";
 			case CategoryType.WouldYouRather:
 				return "Would you rather ";
 			default:

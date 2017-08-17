@@ -26,12 +26,56 @@ export class AngularFireDbSeeder {
 			Number.MAX_VALUE,
 			true
 		),
-		new Category(this.guid.newGuid(), true, "Fuck Mary Kill", null, Status.Platform, CategoryType.FuckMaryKill, false, true, 3, true),
-		new Category(this.guid.newGuid(), true, "Pick Favorite", null, Status.Platform, CategoryType.PickFavorite, true, true, 1, true),
+		new Category(
+			this.guid.newGuid(),
+			true,
+			"Fuck Mary Kill",
+			null,
+			Status.Platform,
+			CategoryType.FuckMarryKill,
+			false,
+			true,
+			3,
+			true
+		),
+		new Category(
+			this.guid.newGuid(),
+			true,
+			"Pick Favorite",
+			null,
+			Status.Platform,
+			CategoryType.PickFavorite,
+			true,
+			true,
+			1,
+			true
+		),
 		new Category(this.guid.newGuid(), true, "Pick Top 3", null, Status.Platform, CategoryType.Pick3, true, true, 3, true),
 		new Category(this.guid.newGuid(), true, "Pick Top 5", null, Status.Platform, CategoryType.Pick5, true, true, 5, true),
-		new Category(this.guid.newGuid(), true, "Devil's Advocate", null, Status.Platform, CategoryType.DevilsAdvocate, false, false, 1, true),
-		new Category(this.guid.newGuid(), true, "Open Ended...", null, Status.Platform, CategoryType.OpenEnded, false, false, 1, true)
+		new Category(
+			this.guid.newGuid(),
+			true,
+			"Devil's Advocate",
+			null,
+			Status.Platform,
+			CategoryType.DevilsAdvocate,
+			false,
+			false,
+			1,
+			true
+		),
+		new Category(
+			this.guid.newGuid(),
+			true,
+			"Open Ended...",
+			null,
+			Status.Platform,
+			CategoryType.OpenEnded,
+			false,
+			false,
+			1,
+			true
+		)
 	];
 	private subCategoriesForSeed: Array<SubCategory> = [
 		new SubCategory(this.guid.newGuid(), true, "Real", null, Status.Platform),
@@ -57,7 +101,10 @@ export class AngularFireDbSeeder {
 		new Tag(this.guid.newGuid(), true, "Movies", null, Status.Platform),
 		new Tag(this.guid.newGuid(), true, "Movie Fights", null, Status.Platform),
 		new Tag(this.guid.newGuid(), true, "Comics", null, Status.Platform),
-		new Tag(this.guid.newGuid(), true, "Food", null, Status.Platform)
+		new Tag(this.guid.newGuid(), true, "Food", null, Status.Platform),
+		new Tag(this.guid.newGuid(), true, "Gross", null, Status.Platform),
+		new Tag(this.guid.newGuid(), true, "Odd", null, Status.Platform),
+		new Tag(this.guid.newGuid(), true, "Disturbing", null, Status.Platform)
 	];
 	constructor(private afdb: AngularFireDBService, private guid: GuidService, private logger: LoggingService) {}
 	// testSeed() {
