@@ -15,13 +15,21 @@ export class Question {
 	questionText: string;
 	description: string;
 	dateCreated: string;
+	upVotes: number = 0;
+	downVotes: number = 0;
 	questionItems: Array<string>;
 	tags: Array<Tag>;
 	status: Status;
 	/**
      *
      */
-	constructor(guid: string, isPlatform: boolean = false, questionText: string = null, description: string = null, status: Status = Status.Platform) {
+	constructor(
+		guid: string,
+		isPlatform: boolean = false,
+		questionText: string = null,
+		description: string = null,
+		status: Status = Status.Platform
+	) {
 		this.id = guid;
 		this.tags = new Array<Tag>();
 		this.questionItems = new Array<string>();

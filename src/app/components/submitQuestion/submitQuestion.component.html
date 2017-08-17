@@ -27,15 +27,16 @@
                 </div>
 
                 <!-- Would You Rather -->
-                <div *ngIf="hasMaxNumberOfChoices()">
+                <div *ngIf="hasMaxNumberOfChoices()" class="row">
                     <div class="flow-text">{{determineQuestionLabel(question.category)}}</div>
 
-                    <div class="input-field col s6">
+                    <div class="input-field col s4">
                         <input [(ngModel)]="question.questionItems[0]" minlength="minLengthOfMultiInputs" name="questionText" placeholder="" id="question"
                             type="text" class="validate">
                         <label for="question">{{determindQuestionItemLabel(question.category, 0)}}</label>
                     </div>
-                    <div class="input-field col s6">
+                    <span class="col s4">or</span>
+                    <div class="input-field col s4">
                         <input [(ngModel)]="question.questionItems[1]" minlength="minLengthOfMultiInputs" name="questionText" placeholder="" id="question"
                             type="text" class="validate">
                         <label for="question">{{determindQuestionItemLabel(question.category, 1)}}</label>

@@ -1,11 +1,14 @@
 import { Component, OnInit } from "@angular/core";
+import { FormBuilder, Validators, NgForm } from "@angular/forms";
 import { Subscription } from "rxjs/Subscription";
+import { NgSwitch } from "@angular/common";
 
 import { Question } from "../../models/question.model";
 import { Tag } from "../../models/tag.model";
 import { Category } from "../../models/category.model";
 import { SubCategory } from "../../models/SubCategory.model";
 
+import { VotingService } from "./services/Voting.service";
 import { LoggingService } from "../../shared/logging/logging.service";
 import { AngularFireDBService } from "../../shared/angular-fire/angular-fire-db.service";
 import { ToastService } from "../../shared/toasts/toast.service";
@@ -41,7 +44,8 @@ export class QuestionListComponent implements OnInit {
 		private ss: SearchService,
 		private afdb: AngularFireDBService,
 		private logger: LoggingService,
-		private toast: ToastService
+		private toast: ToastService,
+		private votingService: VotingService
 	) {
 		this.getQuestions();
 	}
@@ -63,7 +67,7 @@ export class QuestionListComponent implements OnInit {
 	}
 	public setButtonColor(array: any[]): string {
 		if (!!array.length) {
-			return 'purple accent-3';
+			return "purple accent-3";
 		}
 		return null;
 	}
@@ -82,6 +86,17 @@ export class QuestionListComponent implements OnInit {
 		}
 		return true;
 	}
+
+	upVote(question: Question) {
+		this.votingService.upVote(question);
+	}
+	downVote(question: Question) {
+		this.votingService.downVote(question);
+	}
+
+	//
+	// Filters
+	//
 	public setTagFilter(tag: Tag) {
 		this.logger.log("Filtering Tag: ", tag.title);
 

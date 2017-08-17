@@ -72,8 +72,9 @@
                     | itemFilter: 'subCategory': subCategoryFilteringArray)">
         <div class="col s12 m6">
 
+            <!-- Question Card -->
             <div class="card z-depth-3">
-                <div [ngSwitch]="question.type" class="card-content">
+                <div *ngIf="!question.questionItems" class="card-content">
                     <span class="card-title">{{ question.questionText }}</span>
                     <div *ngIf="!!question.category.title" class="card-padding category-area flow-text">
                         <span>{{question.category.title}}</span><span *ngIf="!!question.subCategory"> / {{question.subCategory.title}}</span>
@@ -86,14 +87,29 @@
                     </div>
                 </div>
 
+                <div *ngIf="!!question.questionItems && question.questionItems.length > 1" class="card-content">
+                    <div class="row">
+                        <span class="card-title col" *ngFor="let item of question.questionItems">{{ item }}</span>
+                    </div>
+                    <div *ngIf="!!question.category.title" class="card-padding category-area flow-text">
+                        <span>{{question.category.title}}</span><span *ngIf="!!question.subCategory"> / {{question.subCategory.title}}</span>
+                    </div>
+
+                    <div *ngIf="!!question.tags" class="tag-padding">
+                        <div class="chip" *ngFor="let tag of question.tags">
+                            {{tag.title}}
+                        </div>
+                    </div>
+                </div>
 
                 <div class="card-action">
-                    <a href="# ">Upvote</a>
-                    <a href="# ">Downvote</a>
+                    <a href="#!" (click)="upVote(question)">Upvote</a>
+                    <a href="#!" (click)="downVote(question)">Downvote</a>
                     <span class="submitted-date">Submitted: {{ question.dateCreated | amDateFormat:'MMMM Do YYYY, h:mm:ss a' }}</span>
                 </div>
 
             </div>
+            <!-- end of Question Card -->
 
         </div>
     </div>
