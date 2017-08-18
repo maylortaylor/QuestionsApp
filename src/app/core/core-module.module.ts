@@ -7,10 +7,11 @@ import { UserService } from "./user-service/user.service";
 import { UserProfileComponent } from "./user-profile/user-profile.component";
 import { UserProfileEditComponent } from "./user-profile/edit/user-profile-edit.component";
 import { UserProfileOverviewComponent } from "./user-profile/overview/user-profile-overview.component";
+import { UserOverviewListService } from "./user-profile/services/UserOverviewList.service";
 
 @NgModule({
 	imports: [CommonModule, UserProfileRouting, FormsModule],
 	declarations: [UserProfileComponent, UserProfileOverviewComponent, UserProfileEditComponent],
-	providers: [UserService]
+	providers: [UserService, UserOverviewListService]
 })
 export class CoreModule {}

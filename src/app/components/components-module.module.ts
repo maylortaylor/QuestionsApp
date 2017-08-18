@@ -15,6 +15,8 @@ import { QuestionLabelDeterminerService } from "./submitQuestion/services/Questi
 import { SubmitQuestionFormValidatorService } from "./submitQuestion/services/SubmitQuestionFormValidator.service";
 import { NumberOfInputFieldDeterminerService } from "./submitQuestion/services/NumberOfInputFieldDeterminer.service";
 import { VotingService } from "../components/questionList/services/Voting.service";
+import { QuestionActionService } from "../components/questionList/services/QuestionAction.service";
+import { QuestionService } from "../components/questionList/services/Question.service";
 
 import { FilterModule } from "../shared/filters/filter.module";
 import { SearchFilterPipe } from "../shared/filters/search-filter.pipe";
@@ -27,7 +29,9 @@ import { SearchFilterPipe } from "../shared/filters/search-filter.pipe";
 		QuestionLabelDeterminerService,
 		SubmitQuestionFormValidatorService,
 		NumberOfInputFieldDeterminerService,
-		VotingService
+		VotingService,
+		QuestionActionService,
+		QuestionService
 	]
 })
 export class ComponentsModule {}

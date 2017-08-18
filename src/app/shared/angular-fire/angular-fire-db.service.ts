@@ -2,6 +2,8 @@ import { Injectable } from "@angular/core";
 import { AngularFireDatabase, FirebaseListObservable, FirebaseObjectObservable } from "angularfire2/database";
 
 import { Action } from "../../models/enums/action.enum";
+import { Question } from "../../models/question.model";
+import { UserModel } from "../../core/user-service/user.model";
 // import { AngularFireAuth } from "angularfire2/auth";
 import { AuthService } from "../auth/auth.service";
 import { UserService } from "../../core/user-service/user.service";
@@ -85,10 +87,56 @@ export class AngularFireDBService {
 		const uploadResponse = this.afdb.object(dbLocation);
 		return uploadResponse.set(object);
 	}
-	public uploadUserItem(itemName: string, object: any) {
+	public favoriteQuestion(question: Question) {
 		var user = this.userService.getCurrentUser();
+		if (user) {
+			return this.uploadUserItem("Favorites", question, user);
+		}
+	}
+	public unfavoriteQuestion(question: Question) {
+		var user = this.userService.getCurrentUser();
+		if (user) {
+			return this.removeUserItem("Favorites", question.id, user);
+		}
+	}
+	public removeUserItem(areaName: string, objectId: any, user: UserModel = null) {
 		if (!user) {
-			throw Error("No user was available!");
+			user = this.userService.getCurrentUser();
+			if (!user) {
+				throw Error("No user was available!");
+			}
+		}
+		if (!objectId) {
+			throw Error("No objectId was provided!");
+		}
+
+		var dbLocation = user.uid + "/" + areaName + "/" + objectId;
+
+		const uploadResponse = this.afdb.object(dbLocation);
+		return uploadResponse.remove();
+	}
+	public updateUserItem(itemName: string, object: any, user: UserModel = null) {
+		if (!user) {
+			user = this.userService.getCurrentUser();
+			if (!user) {
+				throw Error("No user was available!");
+			}
+		}
+		if (!object) {
+			throw Error("No object was provided!");
+		}
+
+		var dbLocation = user.uid + "/" + itemName + "/" + object.id;
+
+		const uploadResponse = this.afdb.object(dbLocation);
+		return uploadResponse.set(object);
+	}
+	public uploadUserItem(itemName: string, object: any, user: UserModel = null) {
+		if (!user) {
+			user = this.userService.getCurrentUser();
+			if (!user) {
+				throw Error("No user was available!");
+			}
 		}
 		if (!object) {
 			throw Error("No object was provided!");
@@ -98,6 +146,35 @@ export class AngularFireDBService {
 
 		const uploadResponse = this.afdb.object(dbLocation);
 		return uploadResponse.set(moment.utc().format());
+	}
+	public getUserItem(itemName: string, object: any, user: UserModel = null) {
+		if (!user) {
+			user = this.userService.getCurrentUser();
+			if (!user) {
+				throw Error("No user was available!");
+			}
+		}
+		if (!object) {
+			throw Error("No object was provided!");
+		}
+
+		var dbLocation = user.uid + "/" + itemName + "/" + object.id;
+
+		const response = this.afdb.object(dbLocation);
+		return response;
+	}
+	public getUserList(areaName: string, user: UserModel = null) {
+		if (!user) {
+			user = this.userService.getCurrentUser();
+			if (!user) {
+				throw Error("No user was available!");
+			}
+		}
+
+		var dbLocation = user.uid + "/" + areaName;
+
+		const response = this.afdb.object(dbLocation);
+		return response;
 	}
 	public getAllFromArea(area: string) {
 		if (!area) {

@@ -17,6 +17,7 @@ export class Question {
 	dateCreated: string;
 	upVotes: number = 0;
 	downVotes: number = 0;
+	favorited: boolean = false;
 	questionItems: Array<string>;
 	tags: Array<Tag>;
 	status: Status;

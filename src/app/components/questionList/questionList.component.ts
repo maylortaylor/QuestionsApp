@@ -8,6 +8,8 @@ import { Tag } from "../../models/tag.model";
 import { Category } from "../../models/category.model";
 import { SubCategory } from "../../models/SubCategory.model";
 
+import { QuestionService } from "./services/Question.service";
+import { QuestionActionService } from "./services/QuestionAction.service";
 import { VotingService } from "./services/Voting.service";
 import { LoggingService } from "../../shared/logging/logging.service";
 import { AngularFireDBService } from "../../shared/angular-fire/angular-fire-db.service";
@@ -45,7 +47,9 @@ export class QuestionListComponent implements OnInit {
 		private afdb: AngularFireDBService,
 		private logger: LoggingService,
 		private toast: ToastService,
-		private votingService: VotingService
+		private votingService: VotingService,
+		private actionService: QuestionActionService,
+		private questionService: QuestionService
 	) {
 		this.getQuestions();
 	}
@@ -53,17 +57,22 @@ export class QuestionListComponent implements OnInit {
 	ngOnInit() {}
 
 	private async getQuestions() {
-		this.afdb.getAllFromArea("Submissions").subscribe(items => {
+		var wonGetQuestions = items => {
 			for (var i = 0; i < items.length; i++) {
 				var question = items[i];
 				this.questions.push(question);
 			}
 			if (!!this.questions.length) {
+				this.questionService.markUserFavorite(this.questions);
 				this.populateFilters(this.questions);
 			}
-		});
 
-		this.logger.log("Questions", this.questions);
+			this.logger.log("WON Get Question", this.questions);
+		};
+		var lostGetQuestions = err => {
+			this.logger.log("LOST Get Question", err);
+		};
+		this.questionService.getQuestions().subscribe(wonGetQuestions, lostGetQuestions);
 	}
 	public setButtonColor(array: any[]): string {
 		if (!array || !array.length) {
@@ -90,11 +99,35 @@ export class QuestionListComponent implements OnInit {
 		return true;
 	}
 
+	//
+	// Actions
+	//
 	public upVote(question: Question) {
 		this.votingService.upVote(question);
 	}
 	public downVote(question: Question) {
 		this.votingService.downVote(question);
+	}
+	public favoriteQuestion(question: Question) {
+		var wonFavoriteQuestion = response => {
+			this.logger.log("WON Favorite Question");
+			question.favorited = true;
+		};
+		var lostFavorteQuestion = response => {
+			this.logger.log("LOST Favorite Question");
+		};
+		var wonUnFavoriteQuestion = response => {
+			this.logger.log("WON Un-Favorite Question");
+			question.favorited = false;
+		};
+		var lostUnFavorteQuestion = response => {
+			this.logger.log("LOST Un-Favorite Question");
+		};
+		if (question.favorited == true) {
+			this.actionService.unfavorite(question).then(wonUnFavoriteQuestion).catch(lostUnFavorteQuestion);
+		} else {
+			this.actionService.favorite(question).then(wonFavoriteQuestion).catch(lostFavorteQuestion);
+		}
 	}
 
 	//

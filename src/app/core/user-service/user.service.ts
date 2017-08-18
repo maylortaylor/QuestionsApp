@@ -62,4 +62,13 @@ export class UserService {
 			return null;
 		}
 	}
+	getUsersListFromDb(listName: string, user: UserModel = null) {
+		if (!user) {
+			user = this.getCurrentUser();
+		}
+		var dbLocation = user.uid + "/" + listName;
+
+		var response = this.af.list(dbLocation);
+		return response;
+	}
 }
