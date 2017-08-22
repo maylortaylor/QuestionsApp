@@ -30,7 +30,7 @@ export class VotingService {
 			this.logger.log("LOST Up Vote: ", response);
 			this.toast.fail("Whoopsee! We couldn't do that");
 		};
-		this.afdb.registerAction("Submissions", Action.UpVote, question).then(wonUpVote).catch(lostUpVote);
+		return this.afdb.registerAction("Submissions", Action.UpVote, question).then(wonUpVote).catch(lostUpVote);
 	}
 	public downVote(question: Question) {
 		var wonDownVote = response => {
@@ -42,7 +42,7 @@ export class VotingService {
 			this.logger.log("LOST Down Vote: ", response);
 			this.toast.fail("Whoopsee! We couldn't do that");
 		};
-		this.afdb.registerAction("Submissions", Action.DownVote, question).then(wonDownVote).catch(lostDownVote);
+		return this.afdb.registerAction("Submissions", Action.DownVote, question).then(wonDownVote).catch(lostDownVote);
 	}
 
 	private trackUsersAction(action: string, question: Question) {
@@ -59,15 +59,15 @@ export class VotingService {
 	}
 
 	private checkQuestionSubmissionStatus(question: Question) {
-		var submission = this.afdb.getByIdFromArea("Submissions", question.id).subscribe(question => {
+		this.afdb.getByIdFromArea("Submissions", question.id).subscribe(question => {
 			if (question.upVotes > this.numberOfVotesToChangeStatus) {
 				question.status = Status.Active;
+				this.afdb.upload("SavedQuestions", question);
 			}
 			if (question.downVotes > this.numberOfVotesToChangeStatus) {
 				question.status = Status.Deleted;
+				this.afdb.update("Submissions", question);
 			}
-
-			this.afdb.update("Submissions", question);
 		});
 	}
 }

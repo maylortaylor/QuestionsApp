@@ -71,7 +71,7 @@ export class SavedQuestionListComponent implements OnInit {
 		var lostGetQuestions = err => {
 			this.logger.log("LOST Get Question", err);
 		};
-		this.questionService.getQuestions().subscribe(wonGetQuestions, lostGetQuestions);
+		this.questionService.getSavedQuestions().subscribe(wonGetQuestions, lostGetQuestions);
 	}
 	public setButtonColor(array: any[]): string {
 		if (!array || !array.length) {

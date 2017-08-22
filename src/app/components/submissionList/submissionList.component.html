@@ -1,7 +1,7 @@
 <div [hidden]="!!questions.length" class="row">
     <div class="col s12 center-text">
         <h4>
-            Sorry! No Questions Have Been Submitted!
+            Sorry! No Submissions Have Been Submitted!
         </h4>
     </div>
 </div>
@@ -12,7 +12,7 @@
         <!-- Search Box -->
         <div class="input-field col s12">
             <input [(ngModel)]="searchText" name="searchText" placeholder="" id="searchText" type="text">
-            <label for="searchText">Search Question</label>
+            <label for="searchText">Search Submissions</label>
         </div>
 
         <div class="row">
@@ -130,11 +130,11 @@
                 </div>
 
                 <div class="card-action">
-                    <a href="#!" class="up-arrow" (click)="upVote(question)">
+                    <a class="up-arrow" (click)="upVote(question)">
                         <i class="material-icons">keyboard_arrow_up</i>
                         <span>{{question.upVotes}}</span>
                     </a>
-                    <a href="#!" class="down-arrow" (click)="downVote(question)">
+                    <a class="down-arrow" (click)="downVote(question)">
                         <i class="material-icons">keyboard_arrow_down</i>
                         <span>{{question.downVotes}}</span>
                     </a>

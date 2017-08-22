@@ -1,7 +1,7 @@
 <div [hidden]="!!questions.length" class="row">
     <div class="col s12 center-text">
         <h4>
-            Sorry! No Questions Have Been Submitted!
+            Sorry! No Questions Have Been Saved!
         </h4>
     </div>
 </div>
@@ -130,14 +130,14 @@
                 </div>
 
                 <div class="card-action">
-                    <a href="#!" class="up-arrow" (click)="upVote(question)">
+                    <!-- <a href="#!" class="up-arrow" (click)="upVote(question)">
                         <i class="material-icons">keyboard_arrow_up</i>
                         <span>{{question.upVotes}}</span>
                     </a>
                     <a href="#!" class="down-arrow" (click)="downVote(question)">
                         <i class="material-icons">keyboard_arrow_down</i>
                         <span>{{question.downVotes}}</span>
-                    </a>
+                    </a> -->
                     <span class="submitted-date">Submitted: {{ question.dateCreated | amDateFormat:'MMMM Do YYYY, h:mm:ss a' }}</span>
                 </div>
 

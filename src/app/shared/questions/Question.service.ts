@@ -16,7 +16,10 @@ export class QuestionService {
 		private logger: LoggingService
 	) {}
 
-	public getQuestions() {
+	public getSavedQuestions() {
+		return this.afdb.getAllFromArea("SavedQuestions");
+	}
+	public getSubmissions() {
 		return this.afdb.getAllFromArea("Submissions");
 	}
 	public markUserFavorite(questions: any) {
