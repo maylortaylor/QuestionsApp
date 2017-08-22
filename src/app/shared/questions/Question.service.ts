@@ -1,9 +1,9 @@
 import { Injectable } from "@angular/core";
 
-import { UserService } from "../../../core/user-service/user.service";
-import { AngularFireDBService } from "../../../shared/angular-fire/angular-fire-db.service";
-import { ToastService } from "../../../shared/toasts/toast.service";
-import { LoggingService } from "../../../shared/logging/logging.service";
+import { UserService } from "../../core/user-service/user.service";
+import { AngularFireDBService } from "../../shared/angular-fire/angular-fire-db.service";
+import { ToastService } from "../../shared/toasts/toast.service";
+import { LoggingService } from "../../shared/logging/logging.service";
 
 import * as _ from "lodash";
 

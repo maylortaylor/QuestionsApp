@@ -8,8 +8,8 @@ import { Tag } from "../../models/tag.model";
 import { Category } from "../../models/category.model";
 import { SubCategory } from "../../models/SubCategory.model";
 
-import { QuestionService } from "./services/Question.service";
-import { QuestionActionService } from "./services/QuestionAction.service";
+import { QuestionService } from "../../shared/questions/Question.service";
+import { QuestionActionService } from "../../shared/questions/QuestionAction.service";
 import { VotingService } from "./services/Voting.service";
 import { LoggingService } from "../../shared/logging/logging.service";
 import { AngularFireDBService } from "../../shared/angular-fire/angular-fire-db.service";
@@ -21,10 +21,10 @@ declare var jquery: any;
 
 @Component({
 	selector: "app-question-list",
-	templateUrl: "./questionList.component.html",
-	styleUrls: ["./questionList.component.less"]
+	templateUrl: "./submissionList.component.html",
+	styleUrls: ["./submissionList.component.less"]
 })
-export class QuestionListComponent implements OnInit {
+export class SubmissionListComponent implements OnInit {
 	private question: Subscription;
 	searchText: string;
 	questions: Array<Question> = new Array<Question>();

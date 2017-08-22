@@ -1,0 +1,150 @@
+<div [hidden]="!!questions.length" class="row">
+    <div class="col s12 center-text">
+        <h4>
+            Sorry! No Questions Have Been Submitted!
+        </h4>
+    </div>
+</div>
+<!-- Search Area -->
+<div [hidden]="!questions.length" class="row">
+    <div class="col s12">
+
+        <!-- Search Box -->
+        <div class="input-field col s12">
+            <input [(ngModel)]="searchText" name="searchText" placeholder="" id="searchText" type="text">
+            <label for="searchText">Search Question</label>
+        </div>
+
+        <div class="row">
+            <div class="col">
+
+                <!-- Tag Dropdown -->
+                <a [hidden]="!tagsForFilter.length" [ngClass]="setButtonColor(tagFilteringArray)" class='dropdown-button btn' href='#' data-activates='tagFilterDropdown'>
+                    <span>Tag Filter</span>
+                    <span [hidden]="hideCheckmarkOnButton(tagFilteringArray)"><i class="material-icons right">check</i></span>
+                </a>
+                <ul id='tagFilterDropdown' class='dropdown-content'>
+                    <li *ngFor="let tag of tagsForFilter">
+                        <a href="#!" (click)="setTagFilter(tag)">
+                            <span>{{tag.title}}</span>
+                            <span [hidden]="hideCheckmark(tagFilteringArray, tag)"><i class="material-icons right">check</i></span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="col">
+
+                <!-- Category Dropdown -->
+                <a [hidden]="!categoriesForFilter.length" [ngClass]="setButtonColor(categoryFilteringArray)" class='dropdown-button btn' href='#' data-activates='categoryFilterDropdown'>
+                    <span>Category Filter</span>
+                    <span [hidden]="hideCheckmarkOnButton(categoryFilteringArray)"><i class="material-icons right">check</i></span>
+                </a>
+                <ul id='categoryFilterDropdown' class='dropdown-content'>
+                    <li *ngFor="let cat of categoriesForFilter">
+                        <a href="#!" (click)="setCategoryFilter(cat)">
+                            <span>{{cat.title}}</span>
+                            <span [hidden]="hideCheckmark(categoryFilteringArray, cat)"><i class="material-icons right">check</i></span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="col">
+
+                <!-- Sub Category Dropdown -->
+                <a [hidden]="!subCategoriesForFilter.length" [ngClass]="setButtonColor(subCategoryFilteringArray)" class='dropdown-button btn' href='#' data-activates='subCategoryFilterDropdown'>
+                    <span>Sub Category Filter</span>
+                    <span [hidden]="hideCheckmarkOnButton(subCategoryFilteringArray)"><i class="material-icons right">check</i></span>
+                </a>
+                <ul id='subCategoryFilterDropdown' class='dropdown-content'>
+                    <li *ngFor="let subCat of subCategoriesForFilter">
+                        <a href="#!" (click)="setSubCategoryFilter(subCat)">
+                            <span>{{subCat.title}}</span>
+                            <span [hidden]="hideCheckmark(subCategoryFilteringArray, subCat)"><i class="material-icons right">check</i></span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <div *ngIf="showClearFilterButton()" class="col">
+
+                <button class="btn waves-effect waves-light" name="clear" (click)="clearFilters()">Clear
+                                    <i class="material-icons right">clear</i>
+                    </button>
+            </div>
+        </div>
+
+    </div>
+</div>
+<!-- end of row (Search Area) -->
+
+<!-- Question Area -->
+<div [hidden]="!questions" class="row">
+    <div *ngFor="let question of (questions
+                        | searchFilter: 'title,questionText': searchText
+                        | collectionFilter: 'tags': 'id': tagFilteringArray
+                        | itemFilter: 'category': categoryFilteringArray
+                        | itemFilter: 'subCategory': subCategoryFilteringArray)">
+        <div class="col s12 m6">
+
+            <!-- Question Card -->
+            <div class="card z-depth-3">
+                <div class="row card-header">
+                    <div class="col right">
+                        <span class="favorite-action" (click)="favoriteQuestion(question)">
+                                <a href="#">
+                                    <i *ngIf="!question.favorited" class="material-icons">favorite_border</i>
+                                    <i *ngIf="!!question.favorited" class="material-icons">favorite</i>
+                                </a>
+                            </span>
+                    </div>
+                </div>
+                <div *ngIf="!question.questionItems" class="card-content">
+                    <span class="card-title">{{ question.questionText }}</span>
+                    <div *ngIf="!!question.category.title" class="card-padding category-area flow-text">
+                        <span>{{question.category.title}}</span><span *ngIf="!!question.subCategory"> / {{question.subCategory.title}}</span>
+                    </div>
+
+                    <div *ngIf="!!question.tags" class="tag-padding">
+                        <div class="chip" *ngFor="let tag of question.tags">
+                            {{tag.title}}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Questions with Multiple Items -->
+                <div *ngIf="!!question.questionItems && question.questionItems.length > 1" class="card-content">
+                    <div class="row">
+                        <span class="card-title col" *ngFor="let item of question.questionItems">{{ item }}</span>
+                    </div>
+                    <div *ngIf="!!question.category.title" class="card-padding category-area flow-text">
+                        <span>{{question.category.title}}</span><span *ngIf="!!question.subCategory"> / {{question.subCategory.title}}</span>
+                    </div>
+
+                    <div *ngIf="!!question.tags" class="tag-padding">
+                        <div class="chip" *ngFor="let tag of question.tags">
+                            {{tag.title}}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-action">
+                    <a href="#!" class="up-arrow" (click)="upVote(question)">
+                        <i class="material-icons">keyboard_arrow_up</i>
+                        <span>{{question.upVotes}}</span>
+                    </a>
+                    <a href="#!" class="down-arrow" (click)="downVote(question)">
+                        <i class="material-icons">keyboard_arrow_down</i>
+                        <span>{{question.downVotes}}</span>
+                    </a>
+                    <span class="submitted-date">Submitted: {{ question.dateCreated | amDateFormat:'MMMM Do YYYY, h:mm:ss a' }}</span>
+                </div>
+
+            </div>
+            <!-- end of Question Card -->
+
+        </div>
+    </div>
+</div>
+<!-- end of row (Question Area) -->
