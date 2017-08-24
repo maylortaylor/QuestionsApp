@@ -48,7 +48,11 @@ export class QuestionService {
 					var array = $.map(data, function(value, index) {
 						return [value];
 					});
-					return resolve(array);
+					// filter out submissions with more than 20 upVotes
+					var filteredSubmissoins = _.remove(array, function(n: any) {
+						return n.upVotes <= 20
+					})
+					return resolve(filteredSubmissoins);
 				} else {
 					var array = $.map(data, function(value, index) {
 						return [value];
