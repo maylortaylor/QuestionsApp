@@ -19,13 +19,14 @@
             <div class="col">
 
                 <!-- Tag Dropdown -->
-                <a [hidden]="!tagsForFilter.length" [ngClass]="setButtonColor(tagFilteringArray)" class='dropdown-button btn' href='#' data-activates='tagFilterDropdown'>
+                <a routerLink="" [hidden]="!tagsForFilter.length" [ngClass]="setButtonColor(tagFilteringArray)" class='dropdown-button btn'
+                    data-activates='tagFilterDropdown'>
                     <span>Tag Filter</span>
                     <span [hidden]="hideCheckmarkOnButton(tagFilteringArray)"><i class="material-icons right">check</i></span>
                 </a>
                 <ul id='tagFilterDropdown' class='dropdown-content'>
                     <li *ngFor="let tag of tagsForFilter">
-                        <a href="#!" (click)="setTagFilter(tag)">
+                        <a (click)="setTagFilter(tag)">
                             <span>{{tag.title}}</span>
                             <span [hidden]="hideCheckmark(tagFilteringArray, tag)"><i class="material-icons right">check</i></span>
                         </a>
@@ -36,13 +37,14 @@
             <div class="col">
 
                 <!-- Category Dropdown -->
-                <a [hidden]="!categoriesForFilter.length" [ngClass]="setButtonColor(categoryFilteringArray)" class='dropdown-button btn' href='#' data-activates='categoryFilterDropdown'>
+                <a [hidden]="!categoriesForFilter.length" [ngClass]="setButtonColor(categoryFilteringArray)" class='dropdown-button btn'
+                    data-activates='categoryFilterDropdown'>
                     <span>Category Filter</span>
                     <span [hidden]="hideCheckmarkOnButton(categoryFilteringArray)"><i class="material-icons right">check</i></span>
                 </a>
                 <ul id='categoryFilterDropdown' class='dropdown-content'>
                     <li *ngFor="let cat of categoriesForFilter">
-                        <a href="#!" (click)="setCategoryFilter(cat)">
+                        <a (click)="setCategoryFilter(cat)">
                             <span>{{cat.title}}</span>
                             <span [hidden]="hideCheckmark(categoryFilteringArray, cat)"><i class="material-icons right">check</i></span>
                         </a>
@@ -53,13 +55,14 @@
             <div class="col">
 
                 <!-- Sub Category Dropdown -->
-                <a [hidden]="!subCategoriesForFilter.length" [ngClass]="setButtonColor(subCategoryFilteringArray)" class='dropdown-button btn' href='#' data-activates='subCategoryFilterDropdown'>
+                <a [hidden]="!subCategoriesForFilter.length" [ngClass]="setButtonColor(subCategoryFilteringArray)" class='dropdown-button btn'
+                    data-activates='subCategoryFilterDropdown'>
                     <span>Sub Category Filter</span>
                     <span [hidden]="hideCheckmarkOnButton(subCategoryFilteringArray)"><i class="material-icons right">check</i></span>
                 </a>
                 <ul id='subCategoryFilterDropdown' class='dropdown-content'>
                     <li *ngFor="let subCat of subCategoriesForFilter">
-                        <a href="#!" (click)="setSubCategoryFilter(subCat)">
+                        <a (click)="setSubCategoryFilter(subCat)">
                             <span>{{subCat.title}}</span>
                             <span [hidden]="hideCheckmark(subCategoryFilteringArray, subCat)"><i class="material-icons right">check</i></span>
                         </a>
@@ -93,7 +96,7 @@
                 <div class="row card-header">
                     <div class="col right">
                         <span class="favorite-action" (click)="favoriteQuestion(question)">
-                            <a href="#">
+                            <a >
                                 <i *ngIf="!question.favorited" class="material-icons">favorite_border</i>
                                 <i *ngIf="!!question.favorited" class="material-icons">favorite</i>
                             </a>

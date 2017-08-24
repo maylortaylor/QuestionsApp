@@ -31,7 +31,7 @@ export class QuestionService {
 		var wonGetFavorites = response => {
 			for (var i = 0; i < questions.length; i++) {
 				var question = questions[i];
-				var favoriteIndex = _.findIndex(response, { $key: question.id });
+				var favoriteIndex = _.findIndex(questions, { $key: question.id });
 				if (favoriteIndex > -1) {
 					questions[favoriteIndex].favorited = true;
 				}

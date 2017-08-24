@@ -9,8 +9,8 @@ import { SavedQuestionListComponent } from "./components/savedQuestionList/saved
 import { UserProfileComponent } from "./core/user-profile/user-profile.component";
 export const router: Routes = [
 	{ path: "submissions", component: SubmissionListComponent },
-	{ path: "addQuestion", component: SubmitQuestionComponent },
-	{ path: "savedQuestionList", component: SavedQuestionListComponent }
+	{ path: "submit", component: SubmitQuestionComponent },
+	{ path: "questions", component: SavedQuestionListComponent }
 	// { path: "profile", component: UserProfileComponent }
 	// { path: "admin", component: AdminComponent, canActivate: [AuthGuard] },
 	// { path: "channel/:channelId", component: ChannelComponent },

@@ -17,7 +17,7 @@ import { ToastService } from "../../shared/toasts/toast.service";
 import { SearchService } from "../../shared/filters/search.service";
 
 import * as _ from "lodash";
-declare var jquery: any;
+declare var $: any;
 
 @Component({
 	selector: "app-question-list",
@@ -55,6 +55,9 @@ export class SubmissionListComponent implements OnInit {
 	}
 
 	ngOnInit() {}
+	ngAfterViewChecked() {
+		this.resetDropdowns();
+	}
 
 	private async getQuestions() {
 		var wonGetQuestions = items => {
@@ -192,9 +195,22 @@ export class SubmissionListComponent implements OnInit {
 	}
 
 	private populateFilters(questions: Array<Question>) {
+		this.clearFilters();
 		this.getTagsForFilter(this.questions);
 		this.getCategoriesForFilter(this.questions);
 		this.getSubCategoriesForFilter(this.questions);
+	}
+	private resetDropdowns() {
+		$(".dropdown-button").dropdown({
+			inDuration: 300,
+			outDuration: 225,
+			constrainWidth: false, // Does not change width of dropdown to that of the activator
+			hover: false, // Activate on hover
+			gutter: 0, // Spacing from edge
+			belowOrigin: false, // Displays dropdown below the button
+			alignment: "left", // Displays dropdown with edge aligned to the left of button
+			stopPropagation: false // Stops event propagation
+		});
 	}
 	private async getCategoriesForFilter(questions: Array<Question>) {
 		for (var i = 0; i < questions.length; i++) {
