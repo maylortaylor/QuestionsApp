@@ -48,10 +48,10 @@ export class SavedQuestionListComponent implements OnInit {
 		// private votingService: VotingService,
 		// private actionService: QuestionActionService,
 		private questionService: QuestionService
-	) {
+	) {}
+	ngOnInit() {
 		this.getQuestions();
 	}
-	ngOnInit() {}
 	ngAfterViewChecked() {
 		this.resetDropdowns();
 	}
@@ -72,7 +72,8 @@ export class SavedQuestionListComponent implements OnInit {
 		var lostGetQuestions = err => {
 			this.logger.log("LOST Get Question", err);
 		};
-		this.questionService.getSavedQuestions().subscribe(wonGetQuestions, lostGetQuestions);
+		// this.questionService.getSavedQuestions().subscribe(wonGetQuestions, lostGetQuestions);
+		this.questionService.getSavedQuestions().then(wonGetQuestions).catch(lostGetQuestions);
 	}
 	public setButtonColor(array: any[]): string {
 		if (!array || !array.length) {

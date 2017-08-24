@@ -10,6 +10,7 @@ import { UserService } from "../../core/user-service/user.service";
 import { LoggingService } from "../logging/logging.service";
 
 import * as moment from "moment";
+import * as querybase from "querybase";
 
 @Injectable()
 export class AngularFireDBService {
@@ -194,5 +195,41 @@ export class AngularFireDBService {
 
 		const getResponse = this.afdb.object(`/${area}/${id}`);
 		return getResponse;
+	}
+	public getQuestions(upvoteUpperLimit: number) {
+		if (!upvoteUpperLimit) {
+			throw Error("No upvoteUpperLimit was provided!");
+		}
+
+		// const getResponse = this.afdb.list(`/SavedQuestions`, {
+		// 	query: {
+		// 		orderByChild: "upVotes",
+		// 		startAt: upvoteUpperLimit
+		// 	}
+		// });
+		// return getResponse;
+
+		var dbRef = this.afdb.database.ref().child("SavedQuestions");
+		var querybaseRef = querybase.ref(dbRef, []);
+		var queriedDbRef = querybaseRef.where("upVotes").greaterThan(upvoteUpperLimit);
+		return queriedDbRef;
+	}
+	public getSubmissions(upvoteUpperLimit: number) {
+		if (!upvoteUpperLimit) {
+			throw Error("No upvoteUpperLimit was provided!");
+		}
+
+		// const getResponse = this.afdb.list(`/Submissions`, {
+		// 	query: {
+		// 		orderByChild: "upVotes",
+		// 		endAt: upvoteUpperLimit
+		// 	}
+		// });
+
+		// return getResponse;
+		var dbRef = this.afdb.database.ref().child("Submissions");
+		var querybaseRef = querybase.ref(dbRef, []);
+		var queriedDbRef = querybaseRef.where("downVotes").lessThan(upvoteUpperLimit);
+		return queriedDbRef;
 	}
 }

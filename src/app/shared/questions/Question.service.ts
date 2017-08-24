@@ -6,6 +6,7 @@ import { ToastService } from "../../shared/toasts/toast.service";
 import { LoggingService } from "../../shared/logging/logging.service";
 
 import * as _ from "lodash";
+// import * as querybase from "querybase";
 
 @Injectable()
 export class QuestionService {
@@ -17,10 +18,45 @@ export class QuestionService {
 	) {}
 
 	public getSavedQuestions() {
-		return this.afdb.getAllFromArea("SavedQuestions");
+		// return this.afdb.getAllFromArea("SavedQuestions");
+		var dbRef = this.afdb.getQuestions(20);
+		return new Promise(function(resolve, reject) {
+			dbRef.once("value", dataSnapshot => {
+				var data = dataSnapshot.val();
+				if (dataSnapshot.exists()) {
+					var array = $.map(data, function(value, index) {
+						return [value];
+					});
+					return resolve(array);
+				} else {
+					var array = $.map(data, function(value, index) {
+						return [value];
+					});
+					return reject(array);
+				}
+			});
+		});
 	}
 	public getSubmissions() {
-		return this.afdb.getAllFromArea("Submissions");
+		// return this.afdb.getAllFromArea("Submissions");
+
+		var dbRef = this.afdb.getSubmissions(20);
+		return new Promise(function(resolve, reject) {
+			dbRef.once("value", dataSnapshot => {
+				var data = dataSnapshot.val();
+				if (dataSnapshot.exists()) {
+					var array = $.map(data, function(value, index) {
+						return [value];
+					});
+					return resolve(array);
+				} else {
+					var array = $.map(data, function(value, index) {
+						return [value];
+					});
+					return reject(array);
+				}
+			});
+		});
 	}
 	public markUserFavorite(questions: any) {
 		var user = this.userService.getCurrentUser();
