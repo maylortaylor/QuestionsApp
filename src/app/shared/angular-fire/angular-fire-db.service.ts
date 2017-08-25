@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import { AngularFireDatabase, FirebaseListObservable, FirebaseObjectObservable } from "angularfire2/database";
 
+import { Status } from "../../models/enums/status.enum";
 import { Action } from "../../models/enums/action.enum";
 import { Question } from "../../models/question.model";
 import { UserModel } from "../../core/user-service/user.model";
@@ -42,7 +43,13 @@ export class AngularFireDBService {
 				object.createdByUserId = currentUser.uid;
 			}
 		}
-		return uploadResponse.set(object);
+		return new Promise(function(resolve, reject) {
+			if (uploadResponse) {
+				return resolve(uploadResponse.set(object));
+			} else {
+				return reject(uploadResponse);
+			}
+		});
 	}
 	public update(dbArea: string, object: any) {
 		if (!dbArea) {
@@ -227,9 +234,10 @@ export class AngularFireDBService {
 		// });
 
 		// return getResponse;
-		var dbRef = this.afdb.database.ref().child("Submissions");
-		var querybaseRef = querybase.ref(dbRef, []);
-		var queriedDbRef = querybaseRef.where("downVotes").lessThan(upvoteUpperLimit);
-		return queriedDbRef;
+		var dbRef = this.afdb.database.ref().child("Submissions").orderByChild("status").equalTo(Status.Active);
+		// var querybaseRef = querybase.ref(dbRef, []);
+		// // var queriedDbRef = querybaseRef.where("downVotes").lessThan(upvoteUpperLimit);
+		// var queriedDbRef = querybaseRef.where("status").startsWith(0);
+		return dbRef;
 	}
 }

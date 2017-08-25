@@ -1,5 +1,6 @@
 import { Injectable } from "@angular/core";
 
+import { Question } from "../../models/question.model";
 import { UserService } from "../../core/user-service/user.service";
 import { AngularFireDBService } from "../../shared/angular-fire/angular-fire-db.service";
 import { ToastService } from "../../shared/toasts/toast.service";
@@ -49,10 +50,10 @@ export class QuestionService {
 						return [value];
 					});
 					// filter out submissions with more than 20 upVotes
-					var filteredSubmissoins = _.remove(array, function(n: any) {
-						return n.upVotes <= 20
-					})
-					return resolve(filteredSubmissoins);
+					// var filteredSubmissions = _.remove(array, function(n: Question) {
+					// 	return n.upVotes < 20;
+					// });
+					return resolve(array);
 				} else {
 					var array = $.map(data, function(value, index) {
 						return [value];

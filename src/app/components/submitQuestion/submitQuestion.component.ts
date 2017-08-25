@@ -1,8 +1,10 @@
 import { Component, OnInit } from "@angular/core";
 import { FormBuilder, Validators, NgForm } from "@angular/forms";
+import { Router } from "@angular/router";
 
 import { Category } from "../../models/category.model";
 import { CategoryType } from "../../models/enums/categoryType.enum";
+import { Status } from "../../models/enums/status.enum";
 import { SubCategory } from "../../models/subCategory.model";
 import { Tag } from "../../models/tag.model";
 
@@ -28,6 +30,7 @@ declare var $: any;
 })
 export class SubmitQuestionComponent implements OnInit {
 	submitQuestionForm: any;
+	isPlatformQuestion: boolean = false;
 	categories: Array<Category> = new Array<Category>();
 	subCategories: Array<SubCategory> = new Array<SubCategory>();
 	tags: Array<Tag> = new Array<Tag>();
@@ -39,6 +42,7 @@ export class SubmitQuestionComponent implements OnInit {
 	minLengthOfSingleInput: number = 10;
 	singleInputField: boolean = true;
 	constructor(
+		private router: Router,
 		private formBuilder: FormBuilder,
 		private guid: GuidService,
 		private afdb: AngularFireDBService,
@@ -229,17 +233,24 @@ export class SubmitQuestionComponent implements OnInit {
 			return false;
 		}
 	}
-	public submitQuestion(submitQuestionForm: NgForm) {
+	public submitQuestion(submitQuestionForm: NgForm, event: Event) {
+		event.preventDefault();
 		this.logger.log("FORM", submitQuestionForm);
 
 		if (!this.question.questionText) {
 			this.logger.log("No Question Text was provided", this.question);
+		}
+		if (this.isPlatformQuestion) {
+			this.question.status = Status.Platform;
+		} else {
+			this.question.status = Status.Active;
 		}
 		this.logger.log("Submitting Question", this.question);
 
 		var wonSubmitQuestion = response => {
 			this.logger.log("WON Upload Submission", this.question);
 			this.toast.success("Yay! Question uploaded!");
+			// this.router.navigate(["submissions"]);
 		};
 		var lostSubmitQuestion = response => {
 			this.logger.log("LOST Upload Submission", this.question);
