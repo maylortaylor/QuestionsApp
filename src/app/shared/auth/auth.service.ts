@@ -33,7 +33,7 @@ export class AuthService {
 		this.isLoggedIn = !!this.afAuth.auth.currentUser ? true : false;
 		if (!!this.isLoggedIn) {
 			// this.logger.log("is logged in", this.isLoggedIn);
-			this.userService.setUser(this.afAuth.auth.currentUser);
+			this.userService.getCurrentUser();
 		}
 		return this.isLoggedIn;
 	}
@@ -41,15 +41,19 @@ export class AuthService {
 		return this.userService.getCurrentUser();
 	}
 	public signInGoogle(): void {
+		var provider = new firebase.auth.GoogleAuthProvider();
+		provider.addScope("https://www.googleapis.com/auth/userinfo.profile");
 		this.afAuth.auth
-			.signInWithPopup(new firebase.auth.GoogleAuthProvider())
+			.signInWithPopup(provider)
 			.then((result: any) => {
 				this.logger.log("WON Google signIn popup", result);
 				// This gives you a Google Access Token. You can use it to access the Google API.
 				var token = result.credential.accessToken;
 				// The signed-in user info.
 				var user = result.user;
-				this.userService.setUser(user);
+				var additionalInfo = result.additionalUserInfo;
+				this.userService.setUser(user, additionalInfo);
+				this.userService.uploadUser(this.userService.user);
 				this.toast.success("Logged in successfully with Google!");
 			})
 			.catch((error: any) => {

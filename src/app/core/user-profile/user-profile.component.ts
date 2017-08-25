@@ -25,12 +25,12 @@ export class UserProfileComponent implements OnInit {
 		private overviewService: UserOverviewListService
 	) {
 		if (!this.userService.userIsLoggedIn) {
-			this.router.navigate(["/"]);
+			this.router.navigate(["/submissions"]);
 		}
 	}
 
 	ngOnInit() {
-		this.user = this.userService.user;
+		// this.user = this.userService.user;
 		this.logger.log("User Page UserModel: ", this.userService.user);
 		this.getUserFavorites();
 		this.getUserSubmittedQuestions();

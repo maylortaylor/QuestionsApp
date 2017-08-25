@@ -1,6 +1,8 @@
 import { UserStylingModel } from "./userStyling.model";
 
 export class UserModel {
+	givenName: string;
+	familyName: string;
 	email: string;
 	password: string;
 	username: string;
